@@ -4,6 +4,7 @@
 #include "bn_sprite_ptr.h"
 #include "mj/mj_game.h"
 #include "bn_sprite_items_reb_buzz.h"
+#include "bn_sprite_items_reb_daisy.h"
 #include "bn_sprite_animate_actions.h"
 #include "bn_optional.h"
 
@@ -39,6 +40,7 @@ namespace reb
 
         private:
             bn::sprite_ptr _playerSprite = bn::sprite_items::reb_buzz.create_sprite(0,0);
+            bn::sprite_ptr _flowerSprite = bn::sprite_items::reb_daisy.create_sprite(-100,0);
             bn::optional<bn::sprite_animate_action<2>> _beeAnimation;
             bool _victory = false;
     };

@@ -21,7 +21,6 @@ MJ_GAME_LIST_ADD_SFX_CREDITS(sfx_credits)
 
 namespace reb
 {
-
     reb_buzz_game::reb_buzz_game([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data& data) :
         mj::game("reb")
     {
@@ -31,6 +30,7 @@ namespace reb
     void reb_buzz_game::fade_in([[maybe_unused]] const mj::game_data& data)
     {
         _playerSprite.set_position(0, 0);
+        _flowerSprite.set_position(-100, 0);
     }
 
     mj::game_result reb_buzz_game::play([[maybe_unused]] const mj::game_data& data)
@@ -51,6 +51,12 @@ namespace reb
         }
         if(bn::keypad::down_held()) {
             _playerSprite.set_y(_playerSprite.y() + player_speed);
+        }
+
+        // TODO: Add bounding boxes to check if player and flower are in the same place
+        if (_playerSprite.y() == _flowerSprite.y() && _playerSprite.x() == _flowerSprite.x())
+        {
+            _victory = true;
         }
 
         return result;
