@@ -17,7 +17,7 @@ namespace
 }
 
 // Macros used to add game to game list
-// MJ_GAME_LIST_ADD(aub::aub_test_game) // The class of the game is used here
+// MJ_GAME_LIST_ADD(jas::jas_game) // The class of the game is used here
 MJ_GAME_LIST_ADD_CODE_CREDITS(code_credits)
 MJ_GAME_LIST_ADD_GRAPHICS_CREDITS(graphics_credits)
 MJ_GAME_LIST_ADD_MUSIC_CREDITS(music_credits)
@@ -32,8 +32,8 @@ namespace jas {
    * @param completed_games how many microgames the player has completed so far
    * @param data shared information, such as a rng and number of frames left in the microgame
    */
-  jas_game::aub_test_game([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data& data) :
-      mj::game("aub"),
+  jas_game::jas_game([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data& data) :
+      mj::game("jas"),
       _player(player({20, 0}, 2))
       {}
 
