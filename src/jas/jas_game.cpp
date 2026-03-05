@@ -15,3 +15,10 @@ namespace
     constexpr bn::string_view sfx_credits[] = {""};
     constexpr bn::string_view music_credits[] = {""};
 }
+
+// Macros used to add game to game list
+// MJ_GAME_LIST_ADD(aub::aub_test_game) // The class of the game is used here
+MJ_GAME_LIST_ADD_CODE_CREDITS(code_credits)
+MJ_GAME_LIST_ADD_GRAPHICS_CREDITS(graphics_credits)
+MJ_GAME_LIST_ADD_MUSIC_CREDITS(music_credits)
+MJ_GAME_LIST_ADD_SFX_CREDITS(sfx_credits)
