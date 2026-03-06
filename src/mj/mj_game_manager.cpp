@@ -54,6 +54,11 @@ game_manager::game_manager(int completed_games, const game_data& data, core& cor
         game_history.push_back(game_index);
     }
 
+    int prechosen = core.chosen_game();
+    if(prechosen != -1) {
+        game_index = prechosen;
+    }
+    
     game_list::function_type game_list_entry = game_list_entries[game_index];
     _game.reset(game_list_entry(completed_games, data));
 }
