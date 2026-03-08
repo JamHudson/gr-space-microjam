@@ -36,10 +36,11 @@ namespace axo
  * @param completed_games how many microgames the player has completed so far
  * @param data shared information, such as a rng and number of frames left in the microgame
  */
-axo_aquatic_galaxy_defense::axo_aquatic_galaxy_defense([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data& data) :
-    mj::game("axo"),
-    _player(player({20, 0}, 2))
-    {}
+axo_aquatic_galaxy_defense::axo_aquatic_galaxy_defense([[maybe_unused]] int completed_games, 
+    [[maybe_unused]] const mj::game_data& data) :
+        mj::game("axo"),
+        _player(player({20, 0}, 2, PLAYER_SIZE))
+        {}
 
 /**
  * The instructions given to the player at the beginning of the microgame.
@@ -87,7 +88,7 @@ mj::game_result axo_aquatic_galaxy_defense::play([[maybe_unused]] const mj::game
  * In this particular microgame the player wins if they make the ball leave the screen.
  */
 bool axo_aquatic_galaxy_defense::victory() const {
-    return _player.out_of_bounds();
+    return _player.still_alive();
 }
 
 /**
