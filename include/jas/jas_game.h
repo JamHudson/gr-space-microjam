@@ -5,6 +5,7 @@
 
 #include "mj/mj_game.h"
 #include "jas/jas_player.h"
+#include "jas/jas_planet.h"
 
 // All game functions/classes/variables/constants scoped to the namespace
 namespace jas
@@ -70,6 +71,9 @@ namespace jas
     private:
         // The character that the player can move
         player _player;
+
+        // The planet
+        planet _planet;
 };
 }
 
