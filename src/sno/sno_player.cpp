@@ -1,6 +1,6 @@
-#include <bn_keypad.h>
-
 #include "sno/player.h"
+
+#include <bn_keypad.h>
 
 #include "bn_sprite_items_sno_dot.h"
 
