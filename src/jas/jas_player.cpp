@@ -1,5 +1,6 @@
 #include "jas/jas_player.h"
 
+#include <bn_math.h>
 #include <bn_keypad.h>
 
 #include "bn_sprite_items_jas_dot.h"
@@ -15,10 +16,11 @@ namespace jas
      * @param starting_position the location to start the player at
      * @param speed the pixels/frame the player moves at in each dimension
      */
-    player::player(bn::fixed_point starting_position, bn::fixed vertical_speed, bn::fixed gravity, bool engine_fired) : _sprite(bn::sprite_items::jas_dot.create_sprite(starting_position)),
-                                                                                                                        _vertical_speed(vertical_speed),
-                                                                                                                        _gravity(gravity),
-                                                                                                                        _engine_fired(false)
+    player::player(bn::fixed_point starting_position, bn::fixed vertical_speed, bn::fixed gravity, bool engine_fired)
+        : _sprite(bn::sprite_items::jas_dot.create_sprite(starting_position)),
+          _vertical_speed(vertical_speed),
+          _gravity(gravity),
+          _engine_fired(false)
     {
     }
     /**
@@ -28,7 +30,7 @@ namespace jas
     {
         if (bn::keypad::a_held())
         {
-            engineOn(.05);
+            engineOn(BOOST_ACCELERATION);
         }
         _vertical_speed += _gravity;
         _sprite.set_y(_sprite.y() + _vertical_speed);
@@ -50,5 +52,15 @@ namespace jas
                _sprite.x() < MIN_X ||
                _sprite.y() > MAX_Y ||
                _sprite.y() < MIN_Y;
+    }
+
+    bool player::on_surface() const
+    {
+        return _sprite.y() > MAX_Y;
+    }
+
+    bool player::at_crash_velocity() const
+    {
+        return bn::abs(_vertical_speed) > CRASH_VELOCITY;
     }
 }

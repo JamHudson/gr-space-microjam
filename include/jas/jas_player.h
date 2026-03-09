@@ -20,6 +20,10 @@ namespace jas
         static constexpr int MAX_Y = bn::display::height() / 2;
         static constexpr int MIN_Y = -bn::display::height() / 2;
 
+        // The Velocity the player can land at before crashing
+        static constexpr int CRASH_VELOCITY = 30;
+        static constexpr bn::fixed BOOST_ACCELERATION = 0.05;
+
     public:
         /**
          * player constructor
@@ -45,6 +49,20 @@ namespace jas
          * @return true if the player has left the screen, false if it is still on the screen
          */
         bool out_of_bounds() const;
+
+        /**
+         * Returns whether the player has left the screen ON THE BOTTOM
+         *
+         * @return true if the player has left the screen, false if it is still on the screen
+         */
+        bool on_surface() const;
+
+        /**
+         * Returns whether the player is moving fast enough to crash
+         *
+         * @return true if the player can crash, false if it can't
+         */
+        bool at_crash_velocity() const;
 
     private:
         // The sprite to display the player

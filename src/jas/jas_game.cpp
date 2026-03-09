@@ -7,11 +7,10 @@
 
 #include "mj/mj_game_list.h"
 
-
 namespace
 {
-    constexpr bn::string_view code_credits[] = { "JamisonAaronSea" };
-    constexpr bn::string_view graphics_credits[] = { "" };
+    constexpr bn::string_view code_credits[] = {"JamisonAaronSea"};
+    constexpr bn::string_view graphics_credits[] = {""};
     constexpr bn::string_view sfx_credits[] = {""};
     constexpr bn::string_view music_credits[] = {""};
 }
@@ -23,87 +22,91 @@ MJ_GAME_LIST_ADD_GRAPHICS_CREDITS(graphics_credits)
 MJ_GAME_LIST_ADD_MUSIC_CREDITS(music_credits)
 MJ_GAME_LIST_ADD_SFX_CREDITS(sfx_credits)
 
-namespace jas {
+namespace jas
+{
     /**
-   * Constructor for an instance of a jas_game
-   * 
-   * First item in the initializer list MUST be a call to the superclass, mj::game with the identifier for the microgame.
-   * 
-   * @param completed_games how many microgames the player has completed so far
-   * @param data shared information, such as a rng and number of frames left in the microgame
-   */
-  jas_game::jas_game([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data& data) :
-      mj::game("jas"),
-      _player(player({0, -40}, 0,.0075,false)),
-      _planet{}
-      {}
+     * Constructor for an instance of a jas_game
+     *
+     * First item in the initializer list MUST be a call to the superclass, mj::game with the identifier for the microgame.
+     *
+     * @param completed_games how many microgames the player has completed so far
+     * @param data shared information, such as a rng and number of frames left in the microgame
+     */
+    jas_game::jas_game([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data &data)
+        : mj::game("jas"),
+          _player(player({0, -40}, 0, .025, false)),
+          _planet{}
+    {
+    }
 
-  /**
-   * The instructions given to the player at the beginning of the microgame.
-   * 
-   * Must be <= 16 characters long
-   */
-  bn::string<16> jas_game::title() const {
-      return "Rover Landing";
-  }
+    /**
+     * The instructions given to the player at the beginning of the microgame.
+     *
+     * Must be <= 16 characters long
+     */
+    bn::string<16> jas_game::title() const
+    {
+        return "Rover Landing";
+    }
 
-  /**
-   * How long the timer for the game should be set to in frames.
-   * 
-   * GBA runs at approx 60 frames per second.
-   */
-  int jas_game::total_frames() const {
-      return 300; // 300 frames at 60fps = 5 seconds
-  }
+    /**
+     * How long the timer for the game should be set to in frames.
+     *
+     * GBA runs at approx 60 frames per second.
+     */
+    int jas_game::total_frames() const
+    {
+        return 300; // 300 frames at 60fps = 5 seconds
+    }
 
+    /**
+     * play is repeatedly called while the microgame is playing.
+     *
+     * You can think of it as what previously was in the while event loop.
+     * You do NOT need to write your own while event loop
+     * You do NOT need to call bn::core::update()
+     *
+     * @param data shared information, such as a rng and number of frames left in the microgame
+     * @return the mj::game result indicating whether the game has finished and whether the title should be hidden
+     */
+    mj::game_result jas_game::play([[maybe_unused]] const mj::game_data &data)
+    {
+        // update the player position
+        _player.update();
 
-  /**
-   * play is repeatedly called while the microgame is playing.
-   * 
-   * You can think of it as what previously was in the while event loop.
-   * You do NOT need to write your own while event loop
-   * You do NOT need to call bn::core::update()
-   * 
-   * @param data shared information, such as a rng and number of frames left in the microgame
-   * @return the mj::game result indicating whether the game has finished and whether the title should be hidden
-   */
-  mj::game_result jas_game::play([[maybe_unused]] const mj::game_data& data)
-  {
-      // update the player position
-      _player.update();
+        // Creates a game result indicating whether the game is finished and whether the title should be hidden early
+        // For this game the game should end early if the player has won (if victory returns true)
+        // The title is not hidden early (false is passed), so the title disappears at the default time
+        mj::game_result result(victory(), false);
+        return result;
+    }
 
-      // Creates a game result indicating whether the game is finished and whether the title should be hidden early
-      // For this game the game should end early if the player has won (if victory returns true)
-      // The title is not hidden early (false is passed), so the title disappears at the default time
-      mj::game_result result(victory(), false);
-      return result;
-  }
+    /**
+     * Returns whether the player has won the microgame.
+     *
+     * In this particular microgame the player wins if they make the ball leave the screen.
+     */
+    bool jas_game::victory() const
+    {
+        return (_player.on_surface() && !_player.at_crash_velocity());
+    }
 
-  /**
-   * Returns whether the player has won the microgame.
-   * 
-   * In this particular microgame the player wins if they make the ball leave the screen.
-   */
-  bool jas_game::victory() const {
-      return _player.out_of_bounds();
-  }
+    /**
+     * Called repeatedly as the game fades into view.
+     *
+     * @param data shared information, such as a rng and number of frames left in the microgame
+     */
+    void jas_game::fade_in([[maybe_unused]] const mj::game_data &data)
+    {
+    }
 
-  /**
-   * Called repeatedly as the game fades into view.
-   * 
-   * @param data shared information, such as a rng and number of frames left in the microgame
-   */
-  void jas_game::fade_in([[maybe_unused]] const mj::game_data& data)
-  {
-  }
-
-  /**
-   * Called repeatedly as the game fades out of view.
-   * 
-   * @param data shared information, such as a rng and number of frames left in the microgame
-   */
-  void jas_game::fade_out([[maybe_unused]] const mj::game_data& data)
-  {
-  }
+    /**
+     * Called repeatedly as the game fades out of view.
+     *
+     * @param data shared information, such as a rng and number of frames left in the microgame
+     */
+    void jas_game::fade_out([[maybe_unused]] const mj::game_data &data)
+    {
+    }
 
 }
