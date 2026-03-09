@@ -27,7 +27,7 @@ MJ_GAME_LIST_ADD_SFX_CREDITS(sfx_credits)
 namespace sno
 {
     sno_test_game::sno_test_game([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data &data) : mj::game("sno"),
-                                                                                                                     _player(sno::player({20, 0}, 2)),
+                                                                                                                     _player(sno::player({50, 30}, 2)),
                                                                                                                      _black_hole(sno::black_hole({0, 0}))
     {
     }
