@@ -15,10 +15,7 @@ namespace jas
     class player
     {
         // The bounds of the screen
-        static constexpr int MAX_X = bn::display::width() / 2;
-        static constexpr int MIN_X = -bn::display::width() / 2;
-        static constexpr int MAX_Y = bn::display::height() / 2;
-        static constexpr int MIN_Y = -bn::display::height() / 2;
+        static constexpr bn::fixed CRASH_Y = 50;
 
         // The Velocity the player can land at before crashing
         static constexpr bn::fixed CRASH_VELOCITY = 2;
@@ -51,9 +48,9 @@ namespace jas
         bool out_of_bounds() const;
 
         /**
-         * Returns whether the player has left the screen ON THE BOTTOM
+         * Returns whether the player has gone beneath the surface (CRASH_Y)
          *
-         * @return true if the player has left the screen, false if it is still on the screen
+         * @return true if the player is under/on the surface, false if it is not
          */
         bool on_surface() const;
 
@@ -64,6 +61,11 @@ namespace jas
          */
         bool at_crash_velocity() const;
 
+        /**
+         * Returns whether the player is crashed, i.e, has lost and should be denied winning.
+         *
+         * @return true if the player has crashed, false it hasn't
+         */
         bool crashed() const;
 
     private:
