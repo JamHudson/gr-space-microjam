@@ -190,3 +190,49 @@ Begin implementing your game! By the end of this wave you do NOT need to have a 
 - You can make more branches if it's helpful for coordination with your teams.
 
 Once you have a prototype ready for review, make a PR from your branch. Make a NEW BRANCH off of that branch so you can continue working on later waves as you wait for feedback.
+
+## Wave 6: Functioning game
+
+In this wave you will implement the rest of the gameplay functionality and handle difficulty. You do not yet need to have the graphics/sound perfect, but the gameplay will have all of the game mechanics you need implemented.
+
+### Pre-reqs
+If you have feedback on a PR, PLEASE RESOLVE THOSE ISSUES BEFORE WORKING ON NEW FUNCTIONALITY.
+
+#### Resolving issues
+
+1. Make sure you are on the dev branch.
+1. Resolve issues described in PR feedback. 
+1. Make/run your game to verify they are fixed.
+1. Commit/add/push.
+
+#### Making a new branch and pulling upstream changes
+
+1. Make sure you are still on dev
+1. Make a new branch off of dev
+1. Switch to that branch
+1. Switch to main
+1. Update from upstream: [Git Branching Cheatsheet](./gitBranchingCheatsheet.md)
+1. Switch back to your new branch
+1. Merge the updates from main
+1. Push up your changes and have your partners pull down the new branch.
+
+### Game functionality
+
+MAKE SURE YOU HAVE UPDATED FROM UPSTREAM. Finish implementing the game mechanics. All of your gameplay functionality should be there! Don't forget to add/commit/push (making sure you're not pushing to a branch with a pending PR)
+
+### Difficulty
+
+MAKE SURE YOU HAVE UPDATED FROM UPSTREAM. Implement 3 tiers of difficulty. Your game should call `recommended_difficulty_level` (see `mj_game.h` for details and `aub_test_game` for an example). It will be accessible as a member function on your game class because your class is a subclass of `mj::game`. You do not need to redeclare this method in you header nor reimplement it. You can just call it. It is currently set up such that the first time your game is played it will be EASY, the second time it will be NORMAL, and later times will be HARD. Therefore you can test your 3 difficulty levels by selecting your game from the DEBUG menu and playing it multiple times.
+
+Your game should become harder in some substantive way. Some suggestions:
+- More enemies to avoid
+- More collectables required
+- Faster speed
+
+However, remember that players will be seeing this microgame for the first time with very little introduction! Make it at least in theory possible to beat when seeing it for the first time.
+
+Make/run, then add/commit/test. You should be tuning your game so that it's fun to play and an appropriate difficulty level.
+
+### Submitting
+
+Once you have added your difficulty levels, add/commit/push. Make a new PR! If you want to continue work past this, please make a new branch to continue your work.
