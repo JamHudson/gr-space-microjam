@@ -38,7 +38,8 @@ namespace aub
  */
 aub_test_game::aub_test_game([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data& data) :
     mj::game("aub"),
-    _player(player({20, 0}, 2))
+    _player(player({20, 0},
+                   _recommended_player_speed(recommended_difficulty_level(completed_games, data))))
     {}
 
 /**
@@ -48,6 +49,17 @@ aub_test_game::aub_test_game([[maybe_unused]] int completed_games, [[maybe_unuse
  */
 bn::string<16> aub_test_game::title() const {
     return "Leave the screen";
+}
+
+// Returns progressively slower player speeds the harder the difficulty
+// The slower the player moves, the harder it is to leave the screen before the timer ends
+bn::fixed aub_test_game::_recommended_player_speed(mj::difficulty_level difficulty) {
+    if(difficulty == mj::difficulty_level::EASY) {
+        return 2;
+    } else if (difficulty == mj::difficulty_level::NORMAL) {
+        return 1;
+    } 
+    return .5;
 }
 
 /**

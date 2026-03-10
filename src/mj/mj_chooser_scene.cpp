@@ -43,6 +43,8 @@ chooser_scene::chooser_scene(core& core) :
             _cursor_idx = -1;
         }
 
+        update_cursor_position();
+
         for(int i = 0; i < game_list_entries.size(); i++) {
             game_list::function_type game_list_entry = game_list_entries[i];
             game.reset(game_list_entry(0, fake_game_data));
@@ -69,8 +71,8 @@ chooser_scene::chooser_scene(core& core) :
             _cursor_idx = _game_names.size() - 1;
         }
     }
-    _cursor.set_x(X_START + CURSOR_OFFSET);
-    _cursor.set_y(Y_START + ((_cursor_idx + 1) * LINE_HEIGHT));
+
+    update_cursor_position();
 
     if(bn::keypad::a_pressed()) {
         auto& sram_data = _core.sram_data();
@@ -84,6 +86,11 @@ chooser_scene::chooser_scene(core& core) :
     }
 
     return next_scene;
+}
+
+void chooser_scene::update_cursor_position() {
+    _cursor.set_x(X_START + CURSOR_OFFSET);
+    _cursor.set_y(Y_START + ((_cursor_idx + 1) * LINE_HEIGHT));
 }
 
 

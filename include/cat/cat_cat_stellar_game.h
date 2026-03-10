@@ -1,31 +1,25 @@
-#ifndef AUB_TEST_GAME_H // Include guard must start with the 3-letter id
-#define AUB_TEST_GAME_H
-
-#include <bn_sprite_ptr.h>
+#ifndef CAT_CAT_STELLAR_GAME_H
+#define CAT_CAT_STELLAR_GAME_H
 
 #include "mj/mj_game.h"
-#include "aub/player.h"
+#include "bn_sprite_ptr.h"
+#include "bn_optional.h"
+#include "bn_array.h"
+#include "cat/cat_player.h"
+#include "bn_regular_bg_ptr.h"
 
-
-// All game functions/classes/variables/constants scoped to the namespace
-namespace aub
+namespace cat
 {
-
-/**
- * aub_test_game is a class representing a microgame where the player must leave the screen.
- * 
- * Like all microgames, it is a public subclass of mj::game
- */
-class aub_test_game : public mj::game
-{
-    public:
+    class cat_cat_stellar_game : public mj::game
+    {
+        public:
         /**
-         * Constructor for an instance of an aub_test_game
+         * Constructor for an instance of a cat_stellar_game
          * 
          * @param completed_games how many microgames the player has completed so far
          * @param data shared information, such as a rng and number of frames left in the microgame
          */
-        aub_test_game(int completed_games, const mj::game_data& data);
+        cat_cat_stellar_game(int completed_games, const mj::game_data& data);
 
         /**
          * The instructions given to the player at the beginning of the microgame.
@@ -57,7 +51,7 @@ class aub_test_game : public mj::game
         /**
          * Returns whether the player has won the microgame.
          * 
-         * In this particular microgame the player wins if they make the ball leave the screen.
+         * In this particular microgame the player wins if they collect enough stars before time runs out.
          */
         bool victory() const override;
 
@@ -69,21 +63,26 @@ class aub_test_game : public mj::game
         void fade_in(const mj::game_data& data) override;
 
         /**
-         * Called repeatedly as the game fades into view. Unused for this particular microgame.
+         * Called repeatedly as the game fades out of view. Unused for this particular microgame.
          * 
          * @param data shared information, such as a rng and number of frames left in the microgame
          */
         void fade_out(const mj::game_data& data) override;
 
     private:
-        // The character that the player can move
-        player _player;
+        // The number of stars the player must collect to win
+        static constexpr int _stars_to_win = 3;
+        static constexpr int _total_stars = 5;
+        static constexpr bn::fixed _collect_distance = 16;
 
-        // Returns progressively slower player speeds the harder the difficulty
-        // The slower the player moves, the harder it is to leave the screen before the timer ends
-        bn::fixed _recommended_player_speed(mj::difficulty_level difficulty);
+        cat_player _player;
+        bn::array<bn::optional<bn::sprite_ptr>, 5> _stars;
+        int _stars_collected;
+
+        void _check_collection();
+
+        bn::regular_bg_ptr _background;
 };
-
 }
 
-#endif
+#endif // CAT_CAT_STELLAR_GAME_H

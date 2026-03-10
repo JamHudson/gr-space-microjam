@@ -1,0 +1,50 @@
+name: Build PR ROM artifact
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-rom-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout PR code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Build in devcontainer
+        uses: devcontainers/ci@v0.3
+        with:
+          configFile: .devcontainer/devcontainer.json
+          runCmd: |
+            set -euxo pipefail
+
+            make -j
+
+            ROM="$(ls -1 *.gba | head -n 1)"
+            REPO="${{ github.event.repository.name }}"
+            PR="${{ github.event.pull_request.number }}"
+            SHA="$(printf '%s' '${{ github.sha }}' | cut -c1-7)"
+
+            OUT="${REPO}-pr${PR}-${SHA}.gba"
+            cp "$ROM" "$OUT"
+
+            echo "ROM_OUT=$OUT" >> "$GITHUB_ENV"
+
+      - name: Upload ROM artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: pr-${{ github.event.pull_request.number }}-rom
+          path: ${{ env.ROM_OUT }}
+          overwrite: true
+          archive: false
+          retention-days: 7

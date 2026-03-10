@@ -27,6 +27,8 @@ private:
     bn::vector<bn::sprite_ptr, 16*64> _game_name_sprites;
     bn::vector<bn::string<16>, 64> _game_names;
 
+    void update_cursor_position();
+
     static constexpr int CURSOR_OFFSET = -6;
     static constexpr int X_START = -90;
     static constexpr int Y_START = -70;
