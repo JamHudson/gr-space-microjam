@@ -25,13 +25,14 @@ namespace aaa
     aaa_planetoids::aaa_planetoids([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data &data) : mj::game("aaa"),
                                                                                                                        _player(bn::fixed_point(0, 0))
     {
+        _asteroids = _recommended_enemy_kill(recommended_difficulty_level(completed_games, data));
 
-        for (int i = 0; i < _enemies.max_size(); i++)
+            for (int i = 0; i < _enemies.max_size(); i++)
         {
-            bn::fixed_point pos(data.random.get_int(-300, 300), data.random.get_int(-150, 150)); // added extra so some _enemies spawn off-screen
+            bn::fixed_point pos(data.random.get_int(-250, 250), data.random.get_int(-100, 100)); // added extra so some _enemies spawn off-screen
             //bn::fixed speed = data.random.get_fixed(.2, .4);                                     // nice slow moving _enemies
 
-            _enemies.push_back(aaa_enemy({pos}, _recommended_enemy_speed(recommended_difficulty_level(completed_games, data))));
+            _enemies.push_back(aaa_enemy({pos}, .6));
         }
     }
 
@@ -76,6 +77,7 @@ namespace aaa
                 if (_bullets[i].getRect().intersects(_enemies[j].getRect()))
                 {
                     _enemies.erase(_enemies.begin() + j);
+                    _asteroids = _asteroids - 1;
                 }
             }
             if (bX > bn::display::width() / 2 || bY > bn::display::height() / 2 || bX < -bn::display::width() / 2 || bY < -bn::display::height() / 2)
@@ -84,17 +86,18 @@ namespace aaa
             }
         }
 
-        return mj::game_result();
+        return mj::game_result(_asteroids == 0, false);
     }
 
     bool aaa_planetoids::victory() const
     {
         // kind of jank but it works if we are hardcoding the inital amount of _enemies
-        if (_enemies.max_size() - _enemies.size() > 1)
-        {
-            return true;
-        }
-        return false;
+        // if (_enemies.max_size() - _enemies.size() > 1)
+        // {
+        //     return true;
+        // }
+        // return false;
+        return _asteroids == 0;
     }
 
     void aaa_planetoids::fade_in([[maybe_unused]] const mj::game_data &data)
@@ -105,12 +108,12 @@ namespace aaa
     {
     }
 
-    bn::fixed aaa_planetoids::_recommended_enemy_speed(mj::difficulty_level difficulty) {
+    bn::fixed aaa_planetoids::_recommended_enemy_kill(mj::difficulty_level difficulty) {
         if(difficulty == mj::difficulty_level::EASY) {
-            return .2;
+            return 3;
         } else if (difficulty == mj::difficulty_level::NORMAL) {
-            return .4;
+            return 5;
         } 
-        return .8;
+        return 10;
 }
 }

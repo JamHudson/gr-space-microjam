@@ -7,7 +7,7 @@ namespace aaa
 {
 
     aaa_Player::aaa_Player(bn::fixed_point starting_position) : _sprite(bn::sprite_items::aaa_player.create_sprite(starting_position)),
-                                                                _rotation_speed(6),
+                                                                _rotation_speed(4),
                                                                 _boundingBox(_sprite.x().round_integer(),
                                                                              _sprite.y().round_integer(),
                                                                              8,
