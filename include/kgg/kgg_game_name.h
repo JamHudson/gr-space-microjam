@@ -2,6 +2,8 @@
 #define KGG_GAME_NAME_H
 
 #include "mj/mj_game.h"
+#include "bn_vector.h"
+#include "kgg/kgg_rock.h"
 #include "kgg/kgg_player.h"
 
 namespace kgg {
@@ -28,6 +30,9 @@ public:
 private:
     bool _victory = false;
     player _player;
+    bool _game_over = false; // helps stop the game once player gets hit
+    int _spawn_timer = 0; // helps deciding when to create a new rock
+    bn::vector<rock, 16> _rocks; // this can store up to 16 rocks
 
 
 };
