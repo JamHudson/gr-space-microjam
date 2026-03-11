@@ -37,6 +37,7 @@ cat_cat_stellar_game::cat_cat_stellar_game([[maybe_unused]] int completed_games,
     _difficulty(recommended_difficulty_level(completed_games, data)),
     _stars_to_win(_recommended_stars_to_win(_difficulty)),
     _player({0, 0}, _recommended_player_speed(_difficulty)),
+    _enemy(bn::sprite_items::cat_enemy.create_sprite(40, 0)),
     _stars_collected(0),
     _text_generator(mj::small_sprite_font),
     _background(bn::regular_bg_items::cat_background.create_bg(0, 0))
@@ -80,6 +81,53 @@ int cat_cat_stellar_game::_recommended_stars_to_win(mj::difficulty_level difficu
 }
 
 /**
+ * check if the player has touched the enemy
+ * 
+ * This function compares the position of the player and the enemy and returns true if they are within a certain distance of each other.
+ */
+bool cat_cat_stellar_game::_enemy_collision() const
+{
+    bn::fixed_point player_pos = _player.position();
+
+    bn::fixed dx = player_pos.x() - _enemy.x();
+    bn::fixed dy = player_pos.y() - _enemy.y();
+    bn::fixed dist_sq = (dx * dx) + (dy * dy);
+
+    return dist_sq < 16 * 16;
+}
+
+void cat_cat_stellar_game::_update_enemy()
+{
+    bn::fixed enemy_x = _enemy.x();
+    bn::fixed enemy_y = _enemy.y();
+
+    bn::fixed player_x = _player.position().x();
+    bn::fixed player_y = _player.position().y();
+
+    bn::fixed enemy_speed = 0.5;
+
+    if(player_x < enemy_x)
+    {
+        enemy_x -= enemy_speed;
+    }
+    else if(player_x > enemy_x)
+    {
+        enemy_x += enemy_speed;
+    }
+
+    if(player_y < enemy_y)
+    {
+        enemy_y -= enemy_speed;
+    }
+    else if(player_y > enemy_y)
+    {
+        enemy_y += enemy_speed;
+    }
+
+    _enemy.set_position(enemy_x, enemy_y);
+}
+
+/**
  * The instructions given to the player at the beginning of the microgame.
  * 
  * Must be <= 16 characters long
@@ -110,7 +158,14 @@ int cat_cat_stellar_game::total_frames() const {
 mj::game_result cat_cat_stellar_game::play([[maybe_unused]] const mj::game_data& data)
 {
     _player.update();
+    _update_enemy();
     _check_collection();
+
+       if(_enemy_collision())
+    {
+        return { false, false };
+    }
+
     return { victory(), false};
 }
 
