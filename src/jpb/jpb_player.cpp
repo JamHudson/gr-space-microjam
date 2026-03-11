@@ -26,19 +26,13 @@ namespace jpb {
         if(bn::keypad::right_held()) {
             _player_sprite.set_x(_player_sprite.x() + _speed);
         }
-        if(bn::keypad::up_held()) {
-            _player_sprite.set_y(_player_sprite.y() - _speed);
-        }
-        if(bn::keypad::down_held()) {
-            _player_sprite.set_y(_player_sprite.y() + _speed);
-        }
 
         _player_box = create_bounding_box(_player_sprite, {16, 8});
 
     }
 
-    bool jpb_player::enemy_intersect(bn::rect enemy_box) const {
-        return _player_box.intersects(enemy_box);
+    bool jpb_player::enemy_shot(bn::rect missile_box, bn::rect enemy_box) const {
+        return missile_box.intersects(enemy_box);
     }
 
     void jpb_player::shoot(bn::vector<jpb_missile, 10>& _missiles) {

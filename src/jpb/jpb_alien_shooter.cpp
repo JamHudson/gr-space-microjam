@@ -9,8 +9,6 @@ namespace
     constexpr bn::string_view music_credits[] = {""};
 }
 
-static constexpr int MAX_Y = bn::display::height() / 2;
-
 MJ_GAME_LIST_ADD(jpb::jpb_alien_shooter) 
 MJ_GAME_LIST_ADD_CODE_CREDITS(code_credits)
 MJ_GAME_LIST_ADD_GRAPHICS_CREDITS(graphics_credits)
@@ -28,11 +26,8 @@ namespace jpb {
         _enemy(jpb_enemy({0, -20}, ENEMY_SIZE))
     {}
 
-    bn::vector<jpb_missile, 10> _missiles;
-    bn::vector<jpb_missile, 10> _trashbin;
-
     bn::string<16> jpb_alien_shooter::title() const {
-        return "Shoot the aliens";
+        return "Shoot the alien";
     }
 
     int jpb_alien_shooter::total_frames() const {
@@ -41,12 +36,17 @@ namespace jpb {
 
     mj::game_result jpb_alien_shooter::play([[maybe_unused]] const mj::game_data& data) {
         _player.update();
-        _player.shoot(_missiles);
         _enemy.update();
+
+        _player.shoot(_missiles);
         for (jpb_missile& missile : _missiles) {
             missile.update();
 
             if (missile._sprite.y() == MAX_Y) {
+                _trashbin.push_back(missile);
+            }
+
+            if (missile._bounding_box.intersects(_enemy._enemy_box)) {
                 _trashbin.push_back(missile);
             }
         }
@@ -60,10 +60,13 @@ namespace jpb {
     }
 
     bool jpb_alien_shooter::victory() const {
-        if (_player.enemy_intersect(_enemy._enemy_box)) {
-            return true;
+        bool hit = false;
+        for (jpb_missile missile : _missiles) {
+            if (_player.enemy_shot(missile._bounding_box, _enemy._enemy_box)) {
+                hit = true;
+            }
         }
-        return false;
+        return hit;
     }
 
     void jpb_alien_shooter::fade_in([[maybe_unused]] const mj::game_data& data) {

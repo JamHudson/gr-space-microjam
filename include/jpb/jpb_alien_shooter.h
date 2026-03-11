@@ -8,6 +8,9 @@
 #include <bn_vector.h>
 
 namespace jpb {
+
+  static constexpr int MAX_Y = bn::display::height() / 2;
+
   class jpb_alien_shooter : public mj::game {
     public: 
       jpb_alien_shooter (int completed_games, const mj::game_data& data);
@@ -28,6 +31,7 @@ namespace jpb {
         jpb_player _player;
         jpb_enemy _enemy;
         bn::vector <jpb_missile, 10> _missiles;
+        bn::vector<jpb_missile, 10> _trashbin;
   };
 }
 

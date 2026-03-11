@@ -19,9 +19,10 @@ class jpb_player {
         jpb_player(bn::fixed_point player_position, bn::size player_size, bn::fixed _speed);
 
         void update();
-        void shoot(bn::vector<jpb_missile, 10>& _missiles);
 
-        bool enemy_intersect(bn::rect enemy_box) const;
+        bool enemy_shot(bn::rect missile_box, bn::rect enemy_box) const;
+
+        void shoot(bn::vector<jpb_missile, 10>& _missiles);
     
         bn::sprite_ptr _player_sprite;
         bn::fixed _speed;
