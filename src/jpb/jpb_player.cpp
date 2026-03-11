@@ -27,6 +27,13 @@ namespace jpb {
             _player_sprite.set_x(_player_sprite.x() + _speed);
         }
 
+        if (_player_sprite.x() < MIN_X + 8) {
+            _player_sprite.set_x(MIN_X + 8);
+        }
+        if (_player_sprite.x() > MAX_X - 8) {
+            _player_sprite.set_x(MAX_X - 8);
+        }
+
         _player_box = create_bounding_box(_player_sprite, {16, 8});
 
     }
@@ -38,7 +45,7 @@ namespace jpb {
     void jpb_player::shoot(bn::vector<jpb_missile, 10>& _missiles) {
         if (bn::keypad::a_pressed()) {
             if (_missiles.size() < 10 ) {
-                _missiles.push_back(jpb_missile({_player_sprite.x(), _player_sprite.y()}, 1, {8, 8}));
+                _missiles.push_back(jpb_missile({_player_sprite.x(), _player_sprite.y()}, 3, {8, 8}));
             }
         }
     }

@@ -15,6 +15,10 @@ namespace jpb {
 bn::rect create_bounding_box(bn::sprite_ptr sprite, bn::size box_size);
 
 class jpb_player {
+
+    static constexpr int MIN_X = -bn::display::width() / 2;
+    static constexpr int MAX_X = bn::display::width() / 2;
+    
     public:
         jpb_player(bn::fixed_point player_position, bn::size player_size, bn::fixed _speed);
 
