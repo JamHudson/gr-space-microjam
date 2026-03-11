@@ -7,7 +7,6 @@
 #include <bn_size.h>
 #include <bn_fixed_point.h>
 
-
 namespace jpb {
     class jpb_missile {
         public:
@@ -17,11 +16,11 @@ namespace jpb {
             void update();
 
             // Properties
+
             bn::sprite_ptr _sprite; 
             bn::fixed _speed; 
             bn::size _size;
             bn::rect _bounding_box;
-          
     };
 }
 

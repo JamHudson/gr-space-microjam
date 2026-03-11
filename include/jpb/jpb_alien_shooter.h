@@ -32,6 +32,7 @@ namespace jpb {
         jpb_enemy _enemy;
         bn::vector <jpb_missile, 10> _missiles;
         bn::vector<jpb_missile, 10> _trashbin;
+        bn::fixed _recommended_player_speed(mj::difficulty_level difficulty);
   };
 }
 

@@ -2,13 +2,15 @@
 #define JPB_PLAYER_H
 
 #include <bn_fixed_point.h>
+#include <bn_fixed.h>
 #include <bn_sprite_ptr.h>
 #include <bn_display.h>
 #include <bn_rect.h>
 #include <bn_size.h>
+#include <bn_vector.h>
+
 #include "jpb/jpb_enemy.h"
 #include "jpb/jpb_missile.h"
-#include <bn_vector.h>
 
 namespace jpb {
 
@@ -28,9 +30,10 @@ class jpb_player {
 
         void shoot(bn::vector<jpb_missile, 10>& _missiles);
     
-        bn::sprite_ptr _player_sprite;
-        bn::fixed _speed;
-        bn::rect _player_box;
+        private:
+            bn::sprite_ptr _player_sprite;
+            bn::fixed _speed;
+            bn::rect _player_box;
 };
 
 }

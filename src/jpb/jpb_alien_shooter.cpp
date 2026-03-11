@@ -22,13 +22,23 @@ namespace jpb {
 
     jpb_alien_shooter::jpb_alien_shooter([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data& data) :
         mj::game("jpb"),
-        _player(jpb_player({0, 30}, PLAYER_SIZE, 2)),
-        _enemy(jpb_enemy({0, -30}, ENEMY_SIZE, 0.5))
+        _player(jpb_player({0, 30}, PLAYER_SIZE, 1.3)),
+        _enemy(jpb_enemy({0, -30}, ENEMY_SIZE,
+            _recommended_player_speed(recommended_difficulty_level(completed_games, data))))
     {}
 
     bn::string<16> jpb_alien_shooter::title() const {
         return "Shoot the alien";
     }
+
+    bn::fixed jpb_alien_shooter::_recommended_player_speed(mj::difficulty_level difficulty) {
+    if (difficulty == mj::difficulty_level::EASY) {
+        return 1;
+    } else if (difficulty == mj::difficulty_level::NORMAL) {
+        return 2;
+    } 
+    return 3;
+}
 
     int jpb_alien_shooter::total_frames() const {
         return 300;
