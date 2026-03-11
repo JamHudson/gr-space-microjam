@@ -26,7 +26,7 @@ bn::string<16> kgg_game_name::title() const
 
 int kgg_game_name::total_frames() const
 {
-    return 180;
+    return 600; // 10 seconds
 }
 
 mj::game_result kgg_game_name::play([[maybe_unused]] const mj::game_data& data)
