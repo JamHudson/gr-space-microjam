@@ -21,8 +21,9 @@ namespace knc {
 
     // helper for intial speed
     bn::fixed knc_astro_cat::_initial_speed(int completed_games, const mj::game_data& data) {
-    return _recommended_speed(recommended_difficulty_level(completed_games, data));
-}
+        return _recommended_speed(recommended_difficulty_level(completed_games, data));
+    }
+
     knc_astro_cat::knc_astro_cat(int completed_games, const mj::game_data& data)
         : mj::game("knc"),
         _background(),
@@ -43,17 +44,48 @@ namespace knc {
         if(_difficulty == mj::difficulty_level::NORMAL || _difficulty == mj::difficulty_level::HARD) {
             _planets.push_back(planet(bn::fixed_point(30, -440), speed));
             _stars.push_back(shooting_star(bn::fixed_point(-120, -30), speed));
-            _stars.push_back(shooting_star(bn::fixed_point(-120, 18), speed));
+            _stars.push_back(shooting_star(bn::fixed_point(-240, 18), speed));
         }
         // hard only get star3
         if(_difficulty == mj::difficulty_level::HARD) {
-            _stars.push_back(shooting_star(bn::fixed_point(-120, 0), speed));
+            _stars.push_back(shooting_star(bn::fixed_point(-360, 0), speed));
             // enemy stays at (1000,1000) until delay expires
         }
     }
 
     bn::string<16> knc_astro_cat::title() const { return "Dodge Them Fire!"; }
     int knc_astro_cat::total_frames() const { return 60 * 5; }
+
+    void knc_astro_cat::_spawn_enemy(const mj::game_data& data, bn::fixed speed) {
+        bn::fixed y = bn::fixed(data.random.get_int(100)) - 50; // random y position for enemy
+        _enemy1 = enemy(bn::fixed_point(-120, y), speed, 1);    // spawn from left moving right
+    }
+
+    void knc_astro_cat::_respawn_enemy(const mj::game_data& data, bn::fixed speed) {
+        _enemy1_direction = !_enemy1_direction; // alternate spawn direction
+        int dir = _enemy1_direction ? 1 : -1; // direction multiplier for speed
+        bn::fixed spawn_x = _enemy1_direction ? bn::fixed(-120) : bn::fixed(120); // spawn from left or right based on direction
+        bn::fixed y = bn::fixed(data.random.get_int(100)) - 50;   // random y position
+        _enemy1 = enemy(bn::fixed_point(spawn_x, y), speed, dir); // spawn enemy with new position and direction
+    }
+
+    void knc_astro_cat::_update_enemy(const mj::game_data& data, bn::fixed speed) {
+        if (_enemy1_delay > 0) {
+            _enemy1_delay--; // decrease delay
+            // spawn enemy when delay expires
+            if (_enemy1_delay == 0) {
+                _spawn_enemy(data, speed);
+            }
+        } else {
+            // update enemy if active
+            _enemy1.update();
+
+            // IF the enemy goes off screen
+            if (_enemy1.off_screen()) {
+                _respawn_enemy(data, speed); // respawn enemy from alternate side
+            }
+        }
+    }
 
     mj::game_result knc_astro_cat::play(const mj::game_data& data)
     {
@@ -86,18 +118,9 @@ namespace knc {
                 bn::fixed y = bn::fixed(data.random.get_int(100)) - 50;
                 _enemy1 = enemy(bn::fixed_point(-120, y), speed, 1);
             }
-        } else {
-            _enemy1.update();
-            if(_enemy1.off_screen()) {
-                _enemy1_direction = !_enemy1_direction;
-                int dir = _enemy1_direction ? 1 : -1;
-                bn::fixed spawn_x = _enemy1_direction ? bn::fixed(-120) : bn::fixed(120);
-                bn::fixed y = bn::fixed(data.random.get_int(100)) - 50;
-                _enemy1 = enemy(bn::fixed_point(spawn_x, y), speed, dir);
-            }
         }
     }
-        // if planet hit cat, end game 
+
         // if star hit cat, end game
 
         for(planet& p : _planets) {
@@ -122,7 +145,7 @@ namespace knc {
         return mj::game_result(_hit, false);
     }
 
-    // if cat never got hit - Win 
+    // if cat never got hit - Win
     bool knc_astro_cat::victory() const { return !_hit; }
     void knc_astro_cat::fade_in(const mj::game_data&) {}
     void knc_astro_cat::fade_out(const mj::game_data&) {}
@@ -134,3 +157,4 @@ MJ_GAME_LIST_ADD_CODE_CREDITS(code_credits)
 MJ_GAME_LIST_ADD_GRAPHICS_CREDITS(graphics_credits)
 MJ_GAME_LIST_ADD_SFX_CREDITS(sfx_credits)
 MJ_GAME_LIST_ADD_MUSIC_CREDITS(music_credits)
+
