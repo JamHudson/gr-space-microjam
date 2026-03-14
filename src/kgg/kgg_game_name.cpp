@@ -8,7 +8,7 @@
 
 namespace {
 constexpr bn::string_view code_credits[] = { "Gurpinder Gill" };
-constexpr bn::string_view graphics_credits[] = { "Gurpinder Gill" };
+constexpr bn::string_view graphics_credits[] = { "" };
 constexpr bn::string_view music_credits[] = { "" };
 constexpr bn::string_view sfx_credits[] = { "" };
 }  
