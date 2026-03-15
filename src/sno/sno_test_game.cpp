@@ -4,7 +4,6 @@
 #include "bn_keypad.h"
 #include "bn_display.h"
 #include "bn_sprite_ptr.h"
-#include "bn_sprite_animate_actions.h"
 
 #include "mj/mj_game_list.h"
 
@@ -38,16 +37,19 @@ namespace sno
         return "Avoid the void!";
     }
 
-// Returns a stronger black hole attraction the harder the difficulty
-    bn::fixed sno_test_game::_recommended_player_speed(mj::difficulty_level difficulty) {
-        if(difficulty == mj::difficulty_level::EASY) {
+    // Returns a stronger black hole attraction the harder the difficulty
+    bn::fixed sno_test_game::_recommended_player_speed(mj::difficulty_level difficulty)
+    {
+        if (difficulty == mj::difficulty_level::EASY)
+        {
             return 2;
-        } else if(difficulty == mj::difficulty_level::NORMAL) {
+        }
+        else if (difficulty == mj::difficulty_level::NORMAL)
+        {
             return 1.5;
-        } 
+        }
         return 1;
     }
-
 
     int sno_test_game::total_frames() const
     {

@@ -5,6 +5,9 @@
 #include <bn_sprite_ptr.h>
 // used the same include as aub/player.h for the animation include
 #include <bn_sprite_animate_actions.h>
+// testing the background here being tied to the spinning black hole
+#include <bn_affine_bg_ptr.h>
+#include "bn_affine_bg_items_background.h"
 
 // All game functions/classes/variables/constants scoped to the namespace
 namespace sno
@@ -40,6 +43,9 @@ namespace sno
         bn::fixed_point _position;
         // The amount of frames in the entire animation
         bn::sprite_animate_action<3> _sprite_action;
+        // The rotating background
+        bn::affine_bg_ptr _background;
+        bn::fixed _rotation = 0;
     };
 
 }
