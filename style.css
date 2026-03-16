@@ -1,0 +1,37 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+#display {
+  width: 100vw;
+  height: 100svh;
+}
+
+#game {
+  width: 100%;
+  height: 100%;
+}
+
+#start {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100svh;
+
+  background: #111;
+  color: #aaa;
+
+  font-size: 2rem;
+  font-weight: 500;
+
+  border: none;
+  cursor: pointer;
+}

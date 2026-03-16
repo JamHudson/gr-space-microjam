@@ -11,7 +11,6 @@
 #include "mj/mj_scene_type.h"
 #include "mj/mj_title_backdrop_1.h"
 
-#include "bn_music_items.h"
 #include "bn_sound_items.h"
 #include "bn_sprite_items_mj_small_pumpkin.h"
 
@@ -48,6 +47,7 @@ title_scene::title_scene(core& core) :
     text_generator.set_left_alignment();
     text_generator.generate(-14, 32, "PLAY", _play_sprites);
     text_generator.generate(-14, 32 + 12, "CREDITS", _credits_sprites);
+    text_generator.generate(-14, 32 + 24, "DEBUG", _debug_sprites);
     text_generator.set_right_alignment();
     text_generator.generate(120 - 12, 80 - 12, MJ_VERSION, _version_sprites);
     text_generator.set_left_alignment();
@@ -146,15 +146,36 @@ void title_scene::_update_menu()
 {
     bn::fixed play_y = _play_sprites[0].y();
     bn::fixed credits_y = _credits_sprites[0].y();
+    bn::fixed debug_y = _debug_sprites[0].y();
     bn::fixed cursor_y = _cursor_sprite.y();
 
-    if(bn::keypad::up_pressed() || bn::keypad::down_pressed())
+    if(bn::keypad::up_pressed())
+    {
+        if(cursor_y == play_y)
+        {
+            _cursor_sprite.set_y(debug_y);
+        }
+        else if(cursor_y == credits_y)
+        {
+            _cursor_sprite.set_y(play_y);
+        } else 
+        {
+            _cursor_sprite.set_y(credits_y);
+        }
+
+        // TODO: Your cursor sound
+        //bn::sound_items::mj_pause_cursor.play();
+    }
+    else if(bn::keypad::down_pressed())
     {
         if(cursor_y == play_y)
         {
             _cursor_sprite.set_y(credits_y);
         }
-        else
+        else if(cursor_y == credits_y)
+        {
+            _cursor_sprite.set_y(debug_y);
+        } else 
         {
             _cursor_sprite.set_y(play_y);
         }
@@ -168,9 +189,13 @@ void title_scene::_update_menu()
         {
             _next_scene = scene_type::GAME;
         }
-        else
+        else if(cursor_y == credits_y)
         {
             _next_scene = scene_type::CREDITS;
+        }
+        else if(cursor_y == debug_y) 
+        {
+            _next_scene = scene_type::CHOOSER;
         }
 
         if(! _bgs_fade_action)

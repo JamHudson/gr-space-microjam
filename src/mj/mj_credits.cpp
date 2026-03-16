@@ -8,8 +8,6 @@
 #include "mj/mj_core.h"
 #include "mj/mj_game_list.h"
 
-#include "bn_music_items.h"
-
 namespace mj
 {
 
@@ -38,9 +36,6 @@ credits::credits(core& core) :
     _sprites_fade_in_action(_create_sprites_fade_in_action())
 {
     _generate_text_items();
-
-    // TODO: Add a song to play
-    //bn::music_items::YOUR_SONG.play(0.5);
 }
 
 int credits::total_frames() const
@@ -62,15 +57,12 @@ bool credits::update()
     {
         _bgs_fade_out_action->update();
         _sprites_fade_out_action->update();
-        _music_volume_action->update();
 
         if(_bgs_fade_out_action->done())
         {
             _bgs_fade_out_action.reset();
             _sprites_fade_out_action.reset();
-            _music_volume_action.reset();
             bn::bg_palettes::set_transparent_color(bn::colors::black);
-            bn::music::stop();
             exit = true;
         }
     }
@@ -252,7 +244,6 @@ void credits::_finish()
         bn::sprite_palettes::set_fade_color(bn::colors::black);
         _bgs_fade_out_action.emplace(fade_frames, 1);
         _sprites_fade_out_action.emplace(fade_frames, 1);
-        _music_volume_action.emplace(fade_frames, 0);
     }
 }
 

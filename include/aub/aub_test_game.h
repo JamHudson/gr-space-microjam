@@ -1,10 +1,13 @@
 #ifndef AUB_TEST_GAME_H // Include guard must start with the 3-letter id
 #define AUB_TEST_GAME_H
 
+#include <bn_regular_bg_ptr.h>
 #include <bn_sprite_ptr.h>
 
 #include "mj/mj_game.h"
 #include "aub/player.h"
+
+
 
 
 // All game functions/classes/variables/constants scoped to the namespace
@@ -78,6 +81,11 @@ class aub_test_game : public mj::game
     private:
         // The character that the player can move
         player _player;
+        bn::regular_bg_ptr _background;
+
+        // Returns progressively slower player speeds the harder the difficulty
+        // The slower the player moves, the harder it is to leave the screen before the timer ends
+        bn::fixed _recommended_player_speed(mj::difficulty_level difficulty);
 };
 
 }

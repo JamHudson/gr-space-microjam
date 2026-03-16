@@ -40,6 +40,14 @@ public:
         return _sram_data;
     }
 
+    void set_chosen_game(int chosen_game) {
+        _chosen_game = chosen_game;
+    }
+
+    [[nodiscard]] int chosen_game() {
+        return _chosen_game;
+    }
+
     void update();
 
 private:
@@ -49,6 +57,7 @@ private:
     bn::random _random;
     mj::sram_data _sram_data;
     bool _reset_ready = false;
+    int _chosen_game = -1;
 
     void _update_keypad();
 };

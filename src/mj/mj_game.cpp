@@ -5,7 +5,7 @@
 
 #include "mj/mj_build_config.h"
 
-#include "bn_music_items.h"
+#include "bn_sound_items.h"
 
 namespace mj
 {
@@ -22,12 +22,12 @@ int game::recommended_total_frames(int base_total_frames, int completed_games, c
 
 difficulty_level game::recommended_difficulty_level(int completed_games, [[maybe_unused]] const game_data& data)
 {
-    return difficulty_level(bn::clamp(completed_games / 9, 0, 2));
+    return difficulty_level(bn::clamp(completed_games, 0, 2));
 }
 
 bn::fixed game::recommended_music_tempo(int completed_games, [[maybe_unused]] const game_data& data)
 {
-    constexpr bn::fixed minimum_tempo = 1.15;
+    constexpr bn::fixed minimum_tempo = 1;
     constexpr bn::fixed maximum_tempo = 1.85;
     constexpr bn::fixed tempo_diff = maximum_tempo - minimum_tempo;
     constexpr int minimum_waves = 0;
@@ -39,34 +39,17 @@ bn::fixed game::recommended_music_tempo(int completed_games, [[maybe_unused]] co
 
 void game::play_music(bn::music_item music_item, int completed_games, const game_data& data)
 {
-    bn::music::play(music_item, 0.5, false);
-    bn::music::set_tempo(recommended_music_tempo(completed_games, data));
+    if(!data.muted) {
+        bn::music::play(music_item, 0.5, false);
+        bn::music::set_tempo(recommended_music_tempo(completed_games, data));
+    }
 }
 
 void game::play_sound(bn::sound_item sound_item, int completed_games, const game_data& data)
 {
-    sound_item.play(1, recommended_music_tempo(completed_games, data), 0);
-}
-
-int game::play_jingle(game_jingle_type jingle, int completed_games, const game_data& data)
-{
-    bn::fixed base_seconds = 8;
-
-    switch(jingle)
-    {
-
-    case game_jingle_type::METRONOME_12BEAT:
-        play_music(bn::music_items::mj_metronome_12beat, completed_games, data);
-        base_seconds = 6;
-        break;
-
-    default:
-        BN_ERROR("Unknown jingle: ", int(jingle));
-        break;
+    if(!data.muted) {
+        sound_item.play(1, recommended_music_tempo(completed_games, data), 0);
     }
-
-    int base_total_frames = (base_seconds * 60).right_shift_integer() - 24 - 24;
-    return recommended_total_frames(base_total_frames, completed_games, data);
 }
 
 game::~game()

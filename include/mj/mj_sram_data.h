@@ -39,6 +39,14 @@ public:
 
     void add_high_score(int high_score);
 
+    void set_chosen_game(int game_index) {
+        _chosen_game = game_index;
+    }
+
+    [[nodiscard]] int chosen_game() const {
+        return _chosen_game;
+    }
+
     void write();
 
 private:
@@ -46,6 +54,7 @@ private:
     int _high_scores[3] = {};
     int _intro_index = 0;
     bool _allow_intro_skip = false;
+    int _chosen_game = -1; // TODO: Use title?
 };
 
 }
