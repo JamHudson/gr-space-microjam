@@ -43,6 +43,7 @@ namespace jas
         // If the player has already crashed, or is about to
         if (crashed() || (on_surface() && at_crash_velocity()))
         {
+            if (!crashed()) explode(); // If the ship is first crashing this frame, then explode.
             // Indicate they are crashed and keep them immobile at surface height
             _crashed = true;
             _sprite.set_y(CRASH_Y);
