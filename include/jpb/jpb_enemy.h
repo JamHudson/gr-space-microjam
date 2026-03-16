@@ -2,25 +2,26 @@
 #define JPB_ENEMY_H
 
 #include "jpb/jpb_player.h"
+#include "jpb/jpb_missile.h"
 
 namespace jpb {
 
 class jpb_enemy {
 
-    static constexpr int MIN_X = -bn::display::width() / 2;
-    static constexpr int MAX_X = bn::display::width() / 2;
-
     public:
-        jpb_enemy(bn::fixed_point enemy_position, bn::size enemy_size, bn::fixed speed);
+        jpb_enemy(bn::fixed_point enemy_position, bn::fixed speed, bn::size enemy_size);
 
         void update();
 
+        bool enemy_shot(bn::vector<jpb_missile, 10> missiles) const;
+
         bn::sprite_ptr _enemy_sprite;
-        bn::rect _enemy_box;
         bn::fixed _enemy_speed;
+        bn::size _enemy_size;
+        bn::rect _enemy_box;
 
         private:
-            bool moving_right = true;
+            bool _moving_right = true;
 };
 
 }

@@ -7,7 +7,7 @@
 namespace jpb {
 
     
-    bn::rect create_bounding_box(bn::sprite_ptr sprite, bn::size box_size) {
+    bn::rect create_bounding_box(bn::sprite_ptr& sprite, bn::size& box_size) {
         return bn::rect(sprite.x().round_integer(),
                         sprite.y().round_integer(),
                         box_size.width(),
@@ -15,9 +15,10 @@ namespace jpb {
     }
 
 
-    jpb_player::jpb_player(bn::fixed_point starting_position, bn::size size, bn::fixed speed) :
+    jpb_player::jpb_player(bn::fixed_point starting_position, bn::fixed speed, bn::size size) :
         _player_sprite(bn::sprite_items::jpb_ship.create_sprite(starting_position)),
         _speed(speed),
+        _player_size(size),
         _player_box(create_bounding_box(_player_sprite, size))
     {}
     
@@ -36,18 +37,15 @@ namespace jpb {
             _player_sprite.set_x(MAX_X - 8);
         }
 
-        _player_box = create_bounding_box(_player_sprite, {16, 8});
+        _player_box = create_bounding_box(_player_sprite, _player_size);
 
-    }
-
-    bool jpb_player::enemy_shot(bn::rect missile_box, bn::rect enemy_box) const {
-        return missile_box.intersects(enemy_box);
     }
 
     void jpb_player::shoot(bn::vector<jpb_missile, 10>& _missiles) {
         if (bn::keypad::a_pressed()) {
+            // We'll add a missile count to cause less confusion
             if (_missiles.size() < 10 ) {
-                _missiles.push_back(jpb_missile({_player_sprite.x(), _player_sprite.y()}, 3, {8, 8}));
+                _missiles.push_back(jpb_missile({_player_sprite.x(), _player_sprite.y()}, 3, {4, 4}));
             }
         }
     }
