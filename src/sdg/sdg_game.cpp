@@ -48,13 +48,13 @@ namespace sdg{
     sdg_game::sdg_game([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data& data) :
     mj::game("sdg"),
         _player(input(_code_difficulty(recommended_difficulty_level(completed_games, data)), data.random)),
-        _background(bn::regular_bg_items::hyperdrivebg.create_bg())
+        _background(bn::regular_bg_items::hyperdrivebg.create_bg(8, 48))
     {
         // Get the randomly generated arrow pattern from the input system.
         const auto& pattern = _player.challenge();
 
         // Initial x positon.
-        int start_x = -80;
+        int start_x = -95;
 
         // Starting y position.
         int y = -40;
