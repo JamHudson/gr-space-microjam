@@ -9,6 +9,7 @@
 #include "bn_regular_bg_items_aaa_bg.h"
 #include <bn_core.h>
 #include <bn_log.h>
+#include "bn_sound_items.h"
 
 namespace
 {
@@ -56,6 +57,7 @@ namespace aaa
 
             _enemies.push_back(aaa_enemy({pos}, .6));
         }
+        play_sound(bn::sound_items::aaa_music, completed_games, data);
     }
 
     bn::string<16> aaa_planetoids::title() const
@@ -140,17 +142,16 @@ namespace aaa
             {
                 if (bullets[i].getRect().intersects(enemies[j].getRect()))
                 {
-                    
+
                     if (!_enemies[j].is_destroyed()) // this makes sure that the enemies destroyed boolean isnt already toggle to prevent duplicate calls
                     {
                         _enemies[j].destroyedAnimation(); // toggles boolean to create/start animation
-                        asteroids = asteroids - 1;      // placing this asteroid decrementer here worked best for triggering correct win condition
+                        asteroids = asteroids - 1;        // placing this asteroid decrementer here worked best for triggering correct win condition
                     }
                     if (_enemies[j].animation_done()) // only deletes if animation is finished
                     {
                         _enemies.erase(_enemies.begin() + j);
                     }
-                    
                 }
             }
             if (_outOfBounds(bullets[i]))
@@ -167,10 +168,12 @@ namespace aaa
         return bX > bn::display::width() / 2 || bY > bn::display::height() / 2 || bX < -bn::display::width() / 2 || bY < -bn::display::height() / 2;
     }
 
-    void aaa_planetoids::_updateHP(int &hp){
+    void aaa_planetoids::_updateHP(int &hp)
+    {
         int x = -100;
         _hpSprites.clear();
-        for (int i = 0; i < hp; i++){
+        for (int i = 0; i < hp; i++)
+        {
             _hpSprites.push_back(bn::sprite_items::aaa_heart.create_sprite(x, -70));
             x += 20;
         }
