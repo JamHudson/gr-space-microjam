@@ -69,6 +69,7 @@ class player {
         bn::size _size;
         hitbox _hitbox;
         bool _alive = true;
+        bool _is_animating = false;
         bn::vector<bubble, 50> bubbles = {};
 };
 

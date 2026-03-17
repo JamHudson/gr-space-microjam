@@ -27,29 +27,46 @@ player::player(bn::fixed_point starting_position, bn::fixed speed, bn::size play
  * Reads from the d-pad and moves the player by one frame accordingly.
  */
 void player::update() {
+    // TODO: Determine frame rate of animation. 5 feels too fast, but it will work for right now.
     if(bn::keypad::left_held()) {
         _sprite.set_x(_sprite.x() - _speed);
-        _sprite_action = bn::create_sprite_animate_action_forever(_sprite, 5, 
-            bn::sprite_items::axo_axolotl.tiles_item(), 5, 6);
+        if(!_is_animating) {
+            _is_animating = true;
+            _sprite.set_horizontal_flip(false);
+            _sprite_action = bn::create_sprite_animate_action_forever(_sprite, 5, 
+                bn::sprite_items::axo_axolotl.tiles_item(), 5, 6);
+        }
     }
     else if(bn::keypad::right_held()) {
         _sprite.set_x(_sprite.x() + _speed);
-        _sprite.set_horizontal_flip(true);
-        _sprite_action = bn::create_sprite_animate_action_forever(_sprite, 5, 
-            bn::sprite_items::axo_axolotl.tiles_item(), 5, 6);
+        if(!_is_animating) {
+            _is_animating = true;
+            _sprite.set_horizontal_flip(true);
+            _sprite_action = bn::create_sprite_animate_action_forever(_sprite, 5, 
+                bn::sprite_items::axo_axolotl.tiles_item(), 5, 6);
+        }
     }
     else if(bn::keypad::up_held()) {
         _sprite.set_y(_sprite.y() - _speed);
-        _sprite_action = bn::create_sprite_animate_action_forever(_sprite, 1, 
-            bn::sprite_items::axo_axolotl.tiles_item(), 1, 2);
+        if(!_is_animating) {
+            _is_animating = true;
+            _sprite.set_horizontal_flip(false);
+            _sprite_action = bn::create_sprite_animate_action_forever(_sprite, 5, 
+                bn::sprite_items::axo_axolotl.tiles_item(), 1, 2);
+        }
     }
     else if(bn::keypad::down_held()) {
         _sprite.set_y(_sprite.y() + _speed);
-        _sprite_action = bn::create_sprite_animate_action_forever(_sprite, 3, 
-            bn::sprite_items::axo_axolotl.tiles_item(), 3, 4);
+        if(!_is_animating) {
+            _is_animating = true;
+            _sprite.set_horizontal_flip(false);
+            _sprite_action = bn::create_sprite_animate_action_forever(_sprite, 5, 
+                bn::sprite_items::axo_axolotl.tiles_item(), 3, 4);
+        }
     }
     else {
         _sprite_action.reset();
+        _is_animating = false;
         _sprite.set_horizontal_flip(false);
         _sprite.set_tiles(bn::sprite_items::axo_axolotl.tiles_item().create_tiles(0));
     }
