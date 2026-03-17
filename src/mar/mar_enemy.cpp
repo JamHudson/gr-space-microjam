@@ -24,6 +24,21 @@ namespace mar{
             )
     {
     }
+
+    bn::rect& mar_enemy::rect() { 
+        return _rect; 
+    }
+
+    bool mar_enemy::isPassed(){
+        return _sprite.x() <= MIN_X;
+    }
+
+    void mar_enemy::set_position(bn::fixed_point position){
+        _sprite.set_position(position);
+
+    }
+
+
     // update the enemy's position by moving it left and updating the collision rectangle's position
     void mar_enemy::update()
     {

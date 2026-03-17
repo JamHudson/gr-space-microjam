@@ -76,9 +76,11 @@ namespace sno
     private:
         // The character that the player can move
         sno::player _player;
+        // the spinning black hole
         sno::black_hole _black_hole;
+        // sets whether captured or not
         bool _player_captured = false;
-        int _frames_elapsed = 0;
+        bn::fixed _recommended_player_speed(mj::difficulty_level difficulty);
     };
 
 }

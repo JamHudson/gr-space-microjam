@@ -4,6 +4,8 @@
 
 #include "bn_sprite_items_aub_triangle.h"
 
+#include "bn_sound_items.h"
+
 // All game functions/classes/variables/constants scoped to the namespace
 namespace aub {
 
@@ -59,6 +61,10 @@ void aub::player::_update_animation() {
     }
     if(bn::keypad::down_pressed()) {
        _sprite_action = bn::create_sprite_animate_action_forever(_sprite, 8, bn::sprite_items::aub_triangle.tiles_item(), 12, 13, 14, 15);
+    }
+
+    if(bn::keypad::any_pressed()) {
+        bn::sound_items::aub_beep.play();
     }
     _sprite_action.update();
 }

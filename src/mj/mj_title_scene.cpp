@@ -11,7 +11,6 @@
 #include "mj/mj_scene_type.h"
 #include "mj/mj_title_backdrop_1.h"
 
-#include "bn_music_items.h"
 #include "bn_sound_items.h"
 #include "bn_sprite_items_mj_small_pumpkin.h"
 

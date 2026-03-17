@@ -28,7 +28,7 @@ jobs:
           runCmd: |
             set -euxo pipefail
 
-            make -j
+            make -j WERROR=1
 
             ROM="$(ls -1 *.gba | head -n 1)"
             REPO="${{ github.event.repository.name }}"

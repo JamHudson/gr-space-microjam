@@ -13,7 +13,6 @@
 #include "mj/mj_game_result_animation.h"
 #include "mj/mj_scene_type.h"
 
-#include "bn_music_items.h"
 #include "bn_regular_bg_items_mj_big_pumpkin_1.h"
 #include "bn_regular_bg_items_mj_big_pumpkin_2.h"
 #include "bn_regular_bg_items_mj_big_pumpkin_3.h"
@@ -64,7 +63,7 @@ namespace
 
 game_scene::game_scene(bool start_with_zoom_out, core& core) :
     _core(core),
-    _data({ core.text_generator(), core.small_text_generator(), core.big_text_generator(), core.random(), 0 }),
+    _data({ core.text_generator(), core.small_text_generator(), core.big_text_generator(), core.random(), 0, false }),
     _pause(core),
     _music_tempo(game::recommended_music_tempo(MJ_INITIAL_COMPLETED_GAMES, _data)),
     _completed_games(MJ_INITIAL_COMPLETED_GAMES),

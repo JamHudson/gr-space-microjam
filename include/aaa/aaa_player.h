@@ -2,6 +2,8 @@
 #define AAA_PLAYER_H
 
 #include <bn_sprite_ptr.h>
+#include <bn_rect.h>
+
 namespace aaa
 {
     class aaa_Player
@@ -12,12 +14,14 @@ namespace aaa
         void update();
 
         bn::fixed getAngle();
+        bn::rect getRect();
 
     private:
         // The sprite to display the player
         bn::sprite_ptr _sprite;
         // how many degrees the player rotates per button press
         int _rotation_speed;
+        bn::rect _boundingBox;
     };
 }
 #endif

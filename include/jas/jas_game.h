@@ -74,6 +74,8 @@ namespace jas
 
         // The planet
         planet _planet;
+
+        bn::fixed _recommended_difficulty_multiplier(mj::difficulty_level difficulty);
 };
 }
 

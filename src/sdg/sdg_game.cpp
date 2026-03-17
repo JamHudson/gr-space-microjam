@@ -15,10 +15,18 @@
 
 #include <bn_sprite_ptr.h>
 #include <bn_sprite_animate_actions.h>
+#include <bn_regular_bg_animate_actions.h>
 
 #include "sdg_game.h"
 #include "sdg/input.h"
 #include "mj/mj_game_list.h"
+
+//Graphics 
+#include "bn_sprite_items_arrow_up.h"
+#include "bn_sprite_items_arrow_right.h"
+#include "bn_sprite_items_arrow_down.h"
+#include "bn_sprite_items_arrow_left.h"
+#include "bn_regular_bg_items_hyperdrivebg.h"
 
 
 namespace
@@ -39,8 +47,42 @@ MJ_GAME_LIST_ADD_SFX_CREDITS(sfx_credits)
 namespace sdg{
     sdg_game::sdg_game([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data& data) :
     mj::game("sdg"),
-        _player(input(_code_difficulty(recommended_difficulty_level(completed_games, data)), data.random))
-    {}
+        _player(input(_code_difficulty(recommended_difficulty_level(completed_games, data)), data.random)),
+        _background(bn::regular_bg_items::hyperdrivebg.create_bg(8, 48))
+    {
+        // Get the randomly generated arrow pattern from the input system.
+        const auto& pattern = _player.challenge();
+
+        // Initial x positon.
+        int start_x = -95;
+
+        // Starting y position.
+        int y = -40;
+
+        // This array maps each number in the pattern to a specific sprite type.
+        const bn::sprite_item* arrow_items[4] = {
+            &bn::sprite_items::arrow_up,
+            &bn::sprite_items::arrow_right,
+            &bn::sprite_items::arrow_down,
+            &bn::sprite_items::arrow_left
+        };
+
+        // pattern.size() tells us how many arrows the player must input. So basically the difficulty
+        for(int i = 0; i < pattern.size(); ++i)
+        {
+            // Each x-coordinate is spaced 20px aprt. 
+            // This needs to change because in hard difficulty the pattern doesnt fit on the screen
+            int x = start_x + (i * 20);
+
+            // pattern[i] returns a number from 0–3, that number says which sprite item to use from arrow_items.
+            bn::sprite_ptr sprite =
+                arrow_items[pattern[i]]->create_sprite(x, y);
+
+            // Store the created sprite inside the _arrows vector.
+            // bn::move transfers ownership of the sprite into the vector instead of copying it
+            _arrows.push_back(bn::move(sprite));
+        }
+    }
 
     bn::string<16> sdg_game::title() const {
     return "Enter the code!";

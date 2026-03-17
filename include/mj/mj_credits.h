@@ -40,7 +40,6 @@ private:
     bn::deque<text_entry, 16> _text_entries;
     bn::optional<bn::bg_palettes_fade_to_action> _bgs_fade_out_action;
     bn::optional<bn::sprite_palettes_fade_to_action> _sprites_fade_out_action;
-    bn::optional<bn::music_volume_to_action> _music_volume_action;
     int _text_index = 0;
     int _text_counter = 1;
 

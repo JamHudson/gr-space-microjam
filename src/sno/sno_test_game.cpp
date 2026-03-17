@@ -4,7 +4,6 @@
 #include "bn_keypad.h"
 #include "bn_display.h"
 #include "bn_sprite_ptr.h"
-#include "bn_sprite_animate_actions.h"
 
 #include "mj/mj_game_list.h"
 
@@ -28,7 +27,7 @@ MJ_GAME_LIST_ADD_SFX_CREDITS(sfx_credits)
 namespace sno
 {
     sno_test_game::sno_test_game([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data &data) : mj::game("sno"),
-                                                                                                                     _player(sno::player({50, 30}, 2)),
+                                                                                                                     _player(sno::player({50, 30}, _recommended_player_speed(recommended_difficulty_level(completed_games, data)))),
                                                                                                                      _black_hole(sno::black_hole({0, 0}))
     {
     }
@@ -36,6 +35,20 @@ namespace sno
     bn::string<16> sno_test_game::title() const
     {
         return "Avoid the void!";
+    }
+
+    // Returns a stronger black hole attraction the harder the difficulty
+    bn::fixed sno_test_game::_recommended_player_speed(mj::difficulty_level difficulty)
+    {
+        if (difficulty == mj::difficulty_level::EASY)
+        {
+            return 2;
+        }
+        else if (difficulty == mj::difficulty_level::NORMAL)
+        {
+            return 1.5;
+        }
+        return 1;
     }
 
     int sno_test_game::total_frames() const
@@ -47,6 +60,7 @@ namespace sno
     {
         _player.update();
         _player.attraction(_black_hole.position());
+        _black_hole.update();
 
         // Check if player collides with black hole
         if (_player.collides_with(_black_hole.position(), 8))

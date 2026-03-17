@@ -7,7 +7,6 @@
 
 #include "mj_difficulty_level.h"
 #include "mj_game_data.h"
-#include "mj_game_jingle_type.h"
 #include "mj_game_result.h"
 
 namespace mj
@@ -70,16 +69,6 @@ public:
      * @param data Shared data between all games.
      */
     static void play_sound(bn::sound_item sound_item, int completed_games, const game_data& data);
-
-    /**
-     * @brief Plays the given common jingle with the recommended tempo
-     * and returns the total frames the game should last.
-     * @param jingle Common game jingle to play.
-     * @param completed_games Number of completed games.
-     * @param data Shared data between all games.
-     * @return Recommended total frames (maximum number of frames that this game should last).
-     */
-    [[nodiscard]] static int play_jingle(game_jingle_type jingle, int completed_games, const game_data& data);
 
     /**
      * @brief Default virtual destructor.
