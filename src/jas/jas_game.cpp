@@ -49,7 +49,7 @@ namespace jas
      */
     bn::string<16> jas_game::title() const
     {
-        return "Rover Landing";
+        return "Land the Rover!";
     }
 
     bn::fixed jas_game::_recommended_difficulty_multiplier(mj::difficulty_level difficulty){

@@ -25,7 +25,7 @@ namespace jas {
          bn::vector<bn::sprite_ptr, 32> text_sprites;
 
         // Define text
-         const bn::string_view instructions = "Press B for thrusters!";
+         const bn::string_view instructions = "Hold A, B, or up for thrusters!";
 
          static constexpr bn::fixed_point TEXT_POSITION = {-100, -70};
     };
