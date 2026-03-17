@@ -13,6 +13,11 @@ namespace mar
     mar_enemy::mar_enemy(
         bn::fixed_point starting_position,
         bn::fixed speed) : _sprite(bn::sprite_items::alien.create_sprite(starting_position)),
+                           _sprite_action(
+                                bn::create_sprite_animate_action_forever(
+                                    _sprite, 16, bn::sprite_items::alien.tiles_item(),0,1,2
+                                )
+                            ),
                            _speed(speed),
                            _rect(bn::rect(
                                starting_position.x().round_integer(),
@@ -38,6 +43,7 @@ namespace mar
     // update the enemy's position by moving it left and updating the collision rectangle's position
     void mar_enemy::update()
     {
+        _sprite_action.update();
         _sprite.set_x(_sprite.x() - _speed);
         _rect.set_position(_sprite.x().round_integer(), _sprite.y().round_integer());
     }

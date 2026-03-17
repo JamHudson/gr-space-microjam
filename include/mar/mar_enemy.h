@@ -6,6 +6,7 @@
 #include <bn_rect.h>
 
 #include "mar/mar_bounds.h"
+#include "bn_sprite_animate_actions.h"
 
 // All game functions/classes/variables/constants scoped to the namespace
 namespace mar
@@ -38,6 +39,8 @@ namespace mar
         bn::fixed _speed;
     // The rectangle used for collision detection
         bn::rect _rect;
+
+        bn::sprite_animate_action<5> _sprite_action;
     };
 
 }
