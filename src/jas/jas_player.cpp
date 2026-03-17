@@ -8,6 +8,7 @@
 #include "bn_sprite_items_jas_flames.h"
 #include "bn_sprite_items_jas_explosion.h"
 #include "jas_player.h"
+#include "bn_sound_items.h"
 
 // All game functions/classes/variables/constants scoped to the namespace
 namespace jas
@@ -71,6 +72,7 @@ namespace jas
 
     void player::explode()
     {
+        bn::sound_items::jas_explosion.play();
         _sprite.set_item(bn::sprite_items::jas_explosion);
     }
 
