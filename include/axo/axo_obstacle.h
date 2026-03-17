@@ -10,44 +10,47 @@
 #include "axo/axo_player.h"
 #include "axo/axo_hitbox.h"
 
+#include <bn_sprite_actions.h>
 
 // All game functions/classes/variables/constants scoped to the namespace
-namespace axo {
+namespace axo
+{
 
     static constexpr bn::size OBSTACLE_SIZE = {16, 16};
 
-/**
- * A sprite flying through space!
- */
-class obstacle {
+    /**
+     * A sprite flying through space!
+     */
+    class obstacle
+    {
 
     public:
         /**
-         * player constructor
-         * 
+         * obstacle constructor
+         *
          * @param starting_position the location to start the obstacle at
          * @param speed the pixels/frame the obstacle moves at in each dimension
          */
-        obstacle(bn::fixed starting_x, bn::fixed starting_y, bn::fixed speed,bn::size obstacle_size);
+        obstacle(bn::fixed starting_x, bn::fixed starting_y, bn::fixed speed, bn::size obstacle_size);
 
         /**
          * Player helps with updating enemy
          */
-        void update(player& player);
+        void update(player &player);
 
-        const hitbox& get_hitbox() const;
+        const hitbox &get_hitbox() const;
 
-        //Out of bounds not needed for obstacle, meant to leave screen anyways
-    
+        // Out of bounds not needed for obstacle, meant to leave screen anyways
+
     private:
-        // The sprite to display the player
+        // The sprite to display the obstacle
         bn::sprite_ptr _sprite;
         // The pixels/frame the player moves in each dimension
         bn::fixed _speed;
-        //size
+        // size
         bn::size _size;
         hitbox _hitbox;
-};
+    };
 
 }
 

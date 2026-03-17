@@ -15,7 +15,7 @@ class hitbox {
         bool intersects(const hitbox& other) const;
 
     private:
-        const bn::sprite_ptr _sprite;
+        bn::sprite_ptr _sprite;
         bn::size _size;
 };
 }

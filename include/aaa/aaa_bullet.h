@@ -2,6 +2,7 @@
 #define AAA_BULLET_H
 
 #include <bn_sprite_ptr.h>
+#include <bn_rect.h>
 namespace aaa
 {
     class aaa_Bullet
@@ -11,15 +12,17 @@ namespace aaa
 
         void update();
         bn::fixed_point BulletPos();
+        bn::rect getRect();
 
     private:
         // The sprite to display the player
         bn::sprite_ptr _sprite;
-        
+
         bn::fixed _speed;
         bn::fixed _angle;
         bn::fixed _vx;
         bn::fixed _vy;
+        bn::rect _boundingBox;
     };
 }
 #endif

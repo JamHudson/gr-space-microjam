@@ -14,7 +14,7 @@ namespace jas
     class planet
     {
         // (0,0) center, (0,-30) is up, (0, 30) is down
-        static constexpr bn::fixed_point PLANET_POSITION = {0, 50};
+        static constexpr bn::fixed_point PLANET_POSITION = {1, 50};
 
     public:
         /**

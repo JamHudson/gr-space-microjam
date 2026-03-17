@@ -9,6 +9,8 @@
 
 #include "bn_regular_bg_items_square_field_bg.h"
 
+#include "bn_sound_items.h"
+
 
 // String arrays for the credits can go in an anonymous namespace
 namespace
@@ -43,7 +45,9 @@ aub_test_game::aub_test_game([[maybe_unused]] int completed_games, [[maybe_unuse
     _player(player({20, 0},
                    _recommended_player_speed(recommended_difficulty_level(completed_games, data)))),
     _background(bn::regular_bg_items::square_field_bg.create_bg())
-    {}
+    {
+        play_sound(bn::sound_items::aub_tower, completed_games, data);
+    }
 
 /**
  * The instructions given to the player at the beginning of the microgame.
@@ -71,7 +75,7 @@ bn::fixed aub_test_game::_recommended_player_speed(mj::difficulty_level difficul
  * GBA runs at approx 60 frames per second.
  */
 int aub_test_game::total_frames() const {
-    return 300; // 300 frames at 60fps = 5 seconds
+    return 600; // 300 frames at 60fps = 5 seconds
 }
 
 /**

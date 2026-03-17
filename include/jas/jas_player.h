@@ -15,10 +15,11 @@ namespace jas
     class player
     {
         // The bounds of the screen
-        static constexpr bn::fixed CRASH_Y = 50;
+        static constexpr bn::fixed CRASH_Y = 31;
 
         // The Velocity the player can land at before crashing
-        static constexpr bn::fixed CRASH_VELOCITY = 2;
+        static constexpr bn::fixed CRASH_VELOCITY = 1;
+        
         // The Acceleration applied to the player while boosting
         static constexpr bn::fixed BOOST_ACCELERATION = 0.05;
 

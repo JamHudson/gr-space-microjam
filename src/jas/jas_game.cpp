@@ -35,7 +35,7 @@ namespace jas
      */
     jas_game::jas_game([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data &data)
         : mj::game("jas"),
-          _player(player({0, -40}, 0, .025)),
+          _player(player({0, -40}, 0, _recommended_difficulty_multiplier(recommended_difficulty_level(completed_games, data)))),
           _planet{}
     {
     }
@@ -50,6 +50,18 @@ namespace jas
         return "Rover Landing";
     }
 
+    bn::fixed jas_game::_recommended_difficulty_multiplier(mj::difficulty_level difficulty){
+        if (difficulty == mj::difficulty_level::EASY)
+        {
+            return .02;
+        }
+        else if (difficulty == mj::difficulty_level::NORMAL)
+        {
+            return .035;
+        }
+        return .045;
+    }
+    
     /**
      * How long the timer for the game should be set to in frames.
      *
