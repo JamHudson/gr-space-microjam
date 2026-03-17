@@ -72,8 +72,13 @@ namespace mar
         // The character that the player can move
         mar_player _player;
 
+<<<<<<< HEAD
         bn::vector<mar_enemy, 25> enemies;
 
+=======
+        bn::vector<mar_enemy, 15> enemies;
+        
+>>>>>>> dc80a174d14e5329132bbdaa4ee3e5088a8813cb
         bool collision = false;
 
         bn::fixed difficulty(mj::difficulty_level difficulty);
