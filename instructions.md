@@ -286,3 +286,59 @@ Make/run, then add/commit/push.
 
 ### Submitting
 Make a new PR! If you want to continue work past this, please make a new branch to continue your work. Please submit your PR link on Canvas.
+
+## Wave 8: Audio and final bugfixing
+
+FIRST ADDRESS ANY OPEN FEEDBACK IN PRs. IF YOU ARE WAITING FOR MORE FEEDBACK, PLEASE MAKE A NEW BRANCH.
+
+MAKE SURE YOU HAVE PULLED FROM UPSTREAM IN YOUR MAIN AND MERGED IT INTO YOUR WORKING BRANCH.
+
+### Adding music to the repo
+
+1. Find a *CC0* song from [OpenGameArt](https://opengameart.org/)
+    > IT MUST BE CC0 LICENSED
+    >
+    > Keep the song webpage open, we will be copying text from it later
+1. Crop the song using [AudioCutter](https://audiocutter.online/). The song should be cropped to NO MORE THAN 12 SECONDS.
+1. Download the file with these exact settings:
+    - Format: WAV
+    - Bit Depth: 8 bits
+    - Channels: Mono
+1. Please make a new folder in `audio` for your group with your 3 letter identifier. e.g. `audio/aub`
+1. Copy the WAV you have downloaded into your new audio folder.
+1. Rename the WAV to be all lower case, threeletter_name.wav. e.g. `aub_tower.wav`
+1. Please make a new folder in `licenses/audio` for your group with your 3 letter identifier. e.g. `licenses/audio/aub`
+1. Make a new file in the licenses folder with the same name as your audi file, but with a txt extension. e.g. `aub_tower.txt`
+1. In the file please have the following (see `licenses/audio/aub/aub_tower.txt` for an example):
+    - The link to to the audio on OpenGameArt
+    - The text "CC0 License" **MAKE SURE TO DOUBLE CHECK IT IS ACTUALLY CC0**
+    - The description of the file from OpenGame Art
+1. Add/commit push!
+
+### Incorporating music
+
+1. In your constructor please call your song using `play_sound`. DO NOT USE `bn::sound_items::sound.play()`. Doing it in this way will make sure your song gets sped up as the game speeds up, and will ensure that muting works properly.
+1. Make and play to test it. YOUR SONG SHOULD NOT BE PLAYING ON THE MENU SCREENS FOR DEBUG. It should only play when your game is actually playing.
+1. Add/commit/push
+
+### Adding sound effects
+
+Please add at least one sound effect. Again, use OpenGameArt to find a **CC0** licensed sound. IT MUST BE **CC0** LICENSED. Follow the same steps to crop the audio and export it as a wav and add the license file. Use it in your game. FOR THE SOUND EFFECT it is ok to use `bn::sound::items::sound.play()` so long as it does not play any sound during the DEBUG menu. It should only have sound when your game is playing.
+
+Make/test
+
+CONFIRM YOU HAVE ADDED A NEW LICENSE FILE AND THE AUDIO IS CC0 LICENSED.
+
+Commit/add/push
+
+### Polish and fix
+
+This will be the final wave. Please make sure your game is in a state you are proud of. Fix any bugs, but now is NOT the time to add new features other than the sounds.
+
+- Make sure there are no warnings
+- Make sure you have a separate license file for each sound/music
+- Make sure there are no bugs.
+- Make sure your difficulty is not too hard. Better to be too easy than too hard!
+
+### Submitting
+Make a new PR! Please submit your PR link on Canvas. **BE READY TO ADDRESS FEEDBACK QUICKLY**. We are almost at our deadline, and there can be NO EXTENSIONS FOR ANY REASON.
