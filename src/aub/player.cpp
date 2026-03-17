@@ -64,7 +64,7 @@ void aub::player::_update_animation() {
     }
 
     if(bn::keypad::any_pressed()) {
-        bn::sound_items::remove.play();
+        bn::sound_items::aub_beep.play();
     }
     _sprite_action.update();
 }
