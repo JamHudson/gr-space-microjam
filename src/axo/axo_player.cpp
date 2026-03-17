@@ -1,7 +1,9 @@
 #include <bn_keypad.h>
+#include <bn_vector.h>
 
 #include "axo/axo_player.h"
 #include "axo/axo_obstacle.h"
+#include "axo/axo_bubble.h"
 #include "bn_sprite_items_axo_axolotl.h"
 
 // All game functions/classes/variables/constants scoped to the namespace
@@ -38,6 +40,26 @@ void player::update() {
         _sprite.set_y(_sprite.y() + _speed);
     }
 
+    if(bn::keypad::a_pressed() || bn::keypad::b_pressed()) {
+        if(bubbles.size() < bubbles.max_size()) {
+            bubbles.push_back(bubble(_sprite.x(), _sprite.y(), BUBBLE_SPEED, 
+            BUBBLE_SIZE));
+        }
+    }
+
+    for(int i = 0; i < bubbles.size(); ) {
+        bubbles[i].update();
+
+        if(bubbles[i].y() < MIN_Y) {
+            bubbles[i] = bubbles.back();
+            bubbles.pop_back();
+        }
+
+        else {
+            ++i;
+        }
+    }
+
     // Keeps player from escaping the screen.
     if (_sprite.x() < MIN_X) {
         _sprite.set_x(MIN_X);
@@ -63,5 +85,9 @@ void player::update() {
 
     void player::kill() {
         _alive = false;
+    }
+
+    void player::clear_bubbles() {
+        bubbles.clear();
     }
 }

@@ -3,8 +3,8 @@
 
 #include <bn_fixed_point.h>
 #include <bn_sprite_ptr.h>
-#include <bn_rect.h>
 
+#include "bn_rect.h"
 #include "mar/mar_bounds.h"
 
 // All game functions/classes/variables/constants scoped to the namespace
@@ -29,7 +29,9 @@ namespace mar
         /**
          * returns
          */
-        bn::rect &rect() { return _rect; }
+        bn::rect &rect() { 
+            return _rect; 
+        }
 
         /**
          * Reads from the d-pad and moves the player by one frame accordingly.

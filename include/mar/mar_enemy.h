@@ -24,9 +24,12 @@ namespace mar
 
         // move the enemy
         void update();
-        bn::rect &rect() { 
-            return _rect; 
-        }
+
+        bn::rect &rect();
+
+        bool isPassed();
+        
+        void set_position(bn::fixed_point position);
 
     private:
         // The sprite to display the enemy

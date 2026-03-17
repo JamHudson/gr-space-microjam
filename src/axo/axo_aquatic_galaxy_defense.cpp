@@ -39,12 +39,16 @@ namespace axo
 axo_aquatic_galaxy_defense::axo_aquatic_galaxy_defense([[maybe_unused]] int completed_games, 
     [[maybe_unused]] const mj::game_data& data) :
         mj::game("axo"),
-        _player(player({20, 0}, 2, PLAYER_SIZE)),
+        _player(player({0, 20}, 
+        _recommended_player_speed(recommended_difficulty_level(completed_games, data)), 
+        PLAYER_SIZE)),
         _obstacles()
         {
-            _obstacles.push_back(obstacle(-100, 0, 1, OBSTACLE_SIZE));
-            _obstacles.push_back(obstacle(-100, -50, 1, OBSTACLE_SIZE));
-            _obstacles.push_back(obstacle(-100, 50, 1, OBSTACLE_SIZE));
+            //spawn 10 obstacles, top of screen with varying x values
+            for(int i = 0; i < 10; i++) {
+                _obstacles.push_back(obstacle(-bn::display::width() / 2 + 20 + (i * 30), 
+                -bn::display::height(), 1, OBSTACLE_SIZE));
+            }
         }
 
 /**
@@ -53,7 +57,7 @@ axo_aquatic_galaxy_defense::axo_aquatic_galaxy_defense([[maybe_unused]] int comp
  * Must be <= 16 characters long
  */
 bn::string<16> axo_aquatic_galaxy_defense::title() const {
-    return "Survive!";
+    return "Shoot the rocks!";
 }
 
 /**
@@ -63,6 +67,10 @@ bn::string<16> axo_aquatic_galaxy_defense::title() const {
  */
 int axo_aquatic_galaxy_defense::total_frames() const {
     return 300; // 300 frames at 60fps = 5 seconds
+}
+
+void axo_aquatic_galaxy_defense::destroy_obstacle(int index) {
+    _obstacles.erase(_obstacles.begin() + index);
 }
 
 /**
@@ -80,6 +88,17 @@ mj::game_result axo_aquatic_galaxy_defense::play([[maybe_unused]] const mj::game
     // update the player position
     _player.update();
 
+    for(int b = 0; b < _player.bubbles_size(); ++b) {
+        for(int i = 0; i < _obstacles.size(); ++i) {
+            auto& bubble = _player.get_bubble(b);
+            auto& obstacle = _obstacles[i];
+            if(bubble.get_hitbox().intersects(obstacle.get_hitbox())) {
+                destroy_obstacle(i);
+                break;
+            }
+        }
+    }
+
     for(auto& obstacle : _obstacles) {
         obstacle.update(_player);
         if(_player.get_hitbox().intersects(obstacle.get_hitbox())) {
@@ -88,6 +107,7 @@ mj::game_result axo_aquatic_galaxy_defense::play([[maybe_unused]] const mj::game
     }
 
     if(!_player.alive()) {
+        _player.clear_bubbles();
         return mj::game_result(true, true);
     }
 
@@ -98,7 +118,7 @@ mj::game_result axo_aquatic_galaxy_defense::play([[maybe_unused]] const mj::game
 /**
  * Returns whether the player has won the microgame.
  * 
- * In this particular microgame the player wins if they make the ball leave the screen.
+ * In this particular microgame the player wins if they survive for the whole duration.
  */
 bool axo_aquatic_galaxy_defense::victory() const {
     return _player.alive();
@@ -120,6 +140,16 @@ void axo_aquatic_galaxy_defense::fade_in([[maybe_unused]] const mj::game_data& d
  */
 void axo_aquatic_galaxy_defense::fade_out([[maybe_unused]] const mj::game_data& data)
 {
+    _player.clear_bubbles();
+}
+
+bn::fixed axo_aquatic_galaxy_defense::_recommended_player_speed(mj::difficulty_level difficulty) {
+    if(difficulty == mj::difficulty_level::EASY) {
+        return 1;
+    } else if (difficulty == mj::difficulty_level::NORMAL) {
+        return .5;
+    } 
+    return .3;
 }
 
 }

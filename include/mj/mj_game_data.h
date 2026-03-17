@@ -17,6 +17,7 @@ struct game_data
     const bn::sprite_text_generator& big_text_generator; //!< 16x16 text generator used by the parent menu.
     bn::random& random; //!< Random number generator used by all games. It is updated at least once per frame.
     int pending_frames; //!< Indicates how many frames are left before the current game ends.
+    bool muted; //!< Whether sound/music should not be played
 };
 
 }

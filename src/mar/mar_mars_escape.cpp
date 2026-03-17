@@ -37,14 +37,17 @@ namespace mar
      * @param data shared information, such as a rng and number of frames left in the microgame
      */
     mar_mars_escape::mar_mars_escape([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data &data) : mj::game("mar"),
-    _player(mar_player({20, 0}, 2))
+    _player(mar_player({MIN_X+60, 0}, 2))
     {
-        for (int i = 0; i < 15; i++)
+        bn::fixed diff =  difficulty(recommended_difficulty_level(completed_games, data));
+
+        for (int i = 0; i < 15 + diff*10; i++)
         {
             enemies.push_back(mar_enemy(
-                {MAX_X,
+                {data.random.get_int(MAX_X, MAX_X*3),
                  data.random.get_int(MIN_Y, MAX_Y)},
-                1));
+                1 + diff)
+            );
             data.random.update();
         }
     }
@@ -87,6 +90,14 @@ namespace mar
                 // if collision is true stop the game, keep title visible (false)
                 return mj::game_result(true, false);
             }
+            if(enemies[i].isPassed()){
+                enemies[i].set_position(
+                    {
+                        data.random.get_int(MAX_X,MAX_X*2),
+                        data.random.get_int(MIN_Y,MAX_Y)
+                    }
+                );
+            }
         }
         // no collision keep the game running, keep title visible (false)
         return mj::game_result(false, false);
@@ -114,4 +125,14 @@ namespace mar
     void mar_mars_escape::fade_out([[maybe_unused]] const mj::game_data &data)
     {
     }
+
+    bn::fixed mar_mars_escape::difficulty(mj::difficulty_level difficulty){
+
+            if(difficulty == mj::difficulty_level::EASY){
+                return 0;
+            } else if(difficulty == mj::difficulty_level::NORMAL){
+                return 0.5;
+            } 
+            return 1;
+        }
 }

@@ -11,7 +11,7 @@ namespace knc {
 class planet {
 public:
 
-    static constexpr bn::fixed COLLISION_RADIUS = 10;
+    static constexpr bn::fixed COLLISION_RADIUS = 6;
     // create a planet 
     planet( bn::fixed_point position, bn::fixed speed);
 

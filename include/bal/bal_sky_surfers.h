@@ -1,6 +1,7 @@
 #ifndef BAL_SKY_SURFERS_H
 #define BAL_SKY_SURFERS_H
 
+#include <bn_regular_bg_ptr.h>
 #include <bn_sprite_ptr.h>
 #include <bn_vector.h>
 #include <bn_random.h>
@@ -27,14 +28,17 @@ namespace bal
         void fade_in(const mj::game_data& data) override;
 
         void fade_out(const mj::game_data& data) override;
-
     private:
         player _bal_player;
         bn::vector<rock, 50> _rocks;
         int _spawn_rocks;
-        bool _player_intersects;
         bn::random& _rng;
+        bool _player_intersects;
+        int _difficulty_level;
         void spawn_rock();
+        bn::fixed _recommended_player_speed(mj::difficulty_level difficulty);
+        bn::regular_bg_ptr _background;
+
 };
 
 }
