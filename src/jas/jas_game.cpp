@@ -38,7 +38,7 @@ namespace jas
         : mj::game("jas"),
           _player(player({0, -40}, 0, _recommended_difficulty_multiplier(recommended_difficulty_level(completed_games, data)))),
           _planet{},
-          _text{}
+          _text(data.text_generator)
     {
     }
 

@@ -5,6 +5,7 @@
 #include <bn_vector.h>
 #include <bn_sprite_ptr.h>
 
+#include "./mj/mj_core.h"
 #include "common_variable_8x16_sprite_font.h"
 
 namespace jas {
@@ -16,11 +17,11 @@ namespace jas {
     {
       public: 
         /* Text constructor */
-        text();
+        text(const bn::sprite_text_generator& generator);
 
       private:
         // Construct text generator
-         bn::sprite_text_generator text_generator{common::variable_8x16_sprite_font};
+         const bn::sprite_text_generator& text_generator;
 
          bn::vector<bn::sprite_ptr, 32> text_sprites;
 
