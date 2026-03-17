@@ -2,6 +2,8 @@
 #include "mj/mj_game_list.h"
 
 #include <bn_log.h>
+#include "bn_regular_bg_items_stary_bg.h"
+#include <bn_sprite_ptr.h>
 
 namespace
 {
@@ -30,20 +32,22 @@ bal_sky_surfers::bal_sky_surfers([[maybe_unused]] int completed_games, [[maybe_u
     _spawn_rocks(0),
     _rng(data.random),
     _player_intersects(false),
-    _difficulty_level(_recommended_player_speed(recommended_difficulty_level(completed_games, data)))
+    _difficulty_level(_recommended_player_speed(recommended_difficulty_level(completed_games, data))),
+    _background(bn::regular_bg_items::stary_bg.create_bg())
+
     {}
 
 
 bn::string<16> bal_sky_surfers::title() const {
     return "Dodge the rocks";
 }
-int bal_sky_surfers::_recommended_player_speed(mj::difficulty_level difficulty) {
+bn::fixed bal_sky_surfers::_recommended_player_speed(mj::difficulty_level difficulty) {
     if(difficulty == mj::difficulty_level::EASY) {
         return 3;
     } else if (difficulty == mj::difficulty_level::NORMAL) {
-        return 6;
+        return 5;
     } 
-    return 9;
+    return 7;
 }
 
 int bal_sky_surfers::total_frames() const {

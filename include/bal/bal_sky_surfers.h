@@ -1,6 +1,7 @@
 #ifndef BAL_SKY_SURFERS_H
 #define BAL_SKY_SURFERS_H
 
+#include <bn_regular_bg_ptr.h>
 #include <bn_sprite_ptr.h>
 #include <bn_vector.h>
 #include <bn_random.h>
@@ -35,7 +36,9 @@ namespace bal
         bool _player_intersects;
         int _difficulty_level;
         void spawn_rock();
-        int _recommended_player_speed(mj::difficulty_level difficulty);
+        bn::fixed _recommended_player_speed(mj::difficulty_level difficulty);
+        bn::regular_bg_ptr _background;
+
 };
 
 }

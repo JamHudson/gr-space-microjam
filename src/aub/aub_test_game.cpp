@@ -46,7 +46,7 @@ aub_test_game::aub_test_game([[maybe_unused]] int completed_games, [[maybe_unuse
                    _recommended_player_speed(recommended_difficulty_level(completed_games, data)))),
     _background(bn::regular_bg_items::square_field_bg.create_bg())
     {
-        play_sound(bn::sound_items::tower, completed_games, data);
+        play_sound(bn::sound_items::aub_tower, completed_games, data);
     }
 
 /**

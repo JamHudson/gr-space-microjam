@@ -3,6 +3,7 @@
 
 #include <bn_sprite_ptr.h>
 #include <bn_rect.h>
+#include <bn_sprite_animate_actions.h>
 
 namespace aaa
 {
@@ -13,6 +14,9 @@ namespace aaa
 
         void update();
         bn::rect getRect();
+        void destroyedAnimation();
+        bool is_destroyed();
+        bool animation_done();
 
     private:
         // The sprite to display the player
@@ -20,6 +24,8 @@ namespace aaa
         // The pixels/frame the player moves in each dimension
         bn::fixed _speed;
         bn::rect _boundingBox;
+        bn::sprite_animate_action<4> _sprite_action;
+        bool isDestroyed = false;
     };
 }
 #endif
