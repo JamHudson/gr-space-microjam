@@ -8,10 +8,10 @@
 namespace axo {
 
 /**
- * player constructor
+ * bubble constructor
  * 
- * @param starting_position the location to start the player at
- * @param speed the pixels/frame the player moves at in each dimension
+ * @param starting_position the location to start the bubble at
+ * @param speed the pixels/frame the bubble moves at in each dimension
  */
 bubble::bubble(bn::fixed starting_x, bn::fixed starting_y, bn::fixed speed, bn::size bubble_size) :
     _sprite(bn::sprite_items::axo_bubble.create_sprite(bn::fixed_point(starting_x, starting_y))),

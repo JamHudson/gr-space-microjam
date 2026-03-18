@@ -8,6 +8,7 @@
 #include "axo/axo_obstacle.h"
 #include "axo/axo_hitbox.h"
 #include "axo/axo_bubble.h"
+#include "axo/axo_blast.h"
 #include "bn_regular_bg_ptr.h"
 
 namespace axo
@@ -76,8 +77,10 @@ class axo_aquatic_galaxy_defense : public mj::game
         // The helper function that allows for obstacles to be destroyed
         void destroy_obstacle(int index);
 
-        // Returns progressively slower player speeds the harder the difficulty
-        // The slower the player moves, the harder it is to shoot any rocks that come close to them, but the easier it is to avoid them
+        // Vector to store explosions!
+        bn::vector<blast, 20> _blasts = {};
+
+        // Returns progressively faster obstacle speeds the harder the difficulty
         bn::fixed _recommended_obstacle_speed(mj::difficulty_level difficulty);
 };
 

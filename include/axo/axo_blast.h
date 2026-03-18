@@ -3,14 +3,11 @@
 
 #include <bn_fixed_point.h>
 #include <bn_sprite_ptr.h>
-#include <bn_size.h>
 #include <bn_display.h>
 
 
 // All game functions/classes/variables/constants scoped to the namespace
 namespace axo {
-
-    static constexpr bn::size BLAST_SIZE = {16, 16};
 
 class blast {
 
@@ -18,23 +15,20 @@ class blast {
         /**
          * blast constructor
          * 
-         * @param starting_x the x coordinate to start the bubble at
-         * @param starting_y the y coordinate to start the bubble at
-         * @param bubble_size the size of the bubble
+         * @param starting_x the x coordinate to start the blast at
+         * @param starting_y the y coordinate to start the blast at
          */
-        blast(bn::fixed starting_x, bn::fixed starting_y, bn::size blast_size);
+        blast(bn::fixed starting_x, bn::fixed starting_y);
 
         void update();
 
-        bn::fixed y() const {
-            return _sprite.y();
-        }
+        bool active_blast() const;
+        
     
     private:
         // The sprite to display the blast
         bn::sprite_ptr _sprite;
-        //size
-        bn::size _size;
+        int _frames_remaining;
 };
 
 }

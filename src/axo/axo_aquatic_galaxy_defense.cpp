@@ -42,7 +42,8 @@ axo_aquatic_galaxy_defense::axo_aquatic_galaxy_defense([[maybe_unused]] int comp
         mj::game("axo"),
         _player(player({0, 20}, 2, PLAYER_SIZE)),
         _background(bn::regular_bg_items::axo_bg.create_bg(0, 0)),
-        _obstacles()
+        _obstacles(),
+        _blasts()
         {
             //spawn 10 obstacles, top of screen with varying y
             for(int i = 0; i < 10; i++) {
@@ -94,13 +95,15 @@ mj::game_result axo_aquatic_galaxy_defense::play([[maybe_unused]] const mj::game
             auto& bubble = _player.get_bubble(b);
             auto& obstacle = _obstacles[i];
             if(bubble.get_hitbox().intersects(obstacle.get_hitbox())) {
-                destroy_obstacle(i);
-                _player.destroy_bubble(b);
+                // Grab the coordinates of the bubble
+                auto blast_x = bubble.x();
+                auto blast_y = bubble.y();
+                _player.destroy_bubble(b); // Destroy the bubble
+                _blasts.push_back(blast(blast_x, blast_y)); // Spawn blast
                 game::play_sound(bn::sound_items::rock_break, 0, data); // play sound if bubble hits obstacle
+                destroy_obstacle(i); // Destroy the obstacle
                 break;
             }
-
-            //if bubble is spawned play sound
             
         }
     }
@@ -109,6 +112,15 @@ mj::game_result axo_aquatic_galaxy_defense::play([[maybe_unused]] const mj::game
         obstacle.update(_player);
         if(_player.get_hitbox().intersects(obstacle.get_hitbox())) {
             _player.kill();
+        }
+    }
+
+    // Runs animation for blasts
+    for(int i = _blasts.size() - 1; i >= 0; --i) {
+        _blasts[i].update();
+
+        if(!_blasts[i].active_blast()) {
+            _blasts.erase(_blasts.begin() + i);
         }
     }
 
