@@ -1,5 +1,8 @@
 #include "jpb/jpb_alien_shooter.h"
 #include "mj/mj_game_list.h"
+#include "bn_regular_bg_items_backdrop.h"
+#include "bn_sprite_animate_actions.h"
+
 
 namespace
 {
@@ -25,7 +28,9 @@ namespace jpb {
         _player(jpb_player({0, 30}, _recommended_player_speed(recommended_difficulty_level(completed_games, data)), 
                         PLAYER_SIZE)),
         _enemy(jpb_enemy({0, -30}, _recommended_enemy_speed(recommended_difficulty_level(completed_games, data)),
-                        ENEMY_SIZE))
+                        ENEMY_SIZE)),
+        _text_generator(data.text_generator),
+        _background(bn::regular_bg_items::backdrop.create_bg(0, 0))
     {}
 
     bn::string<16> jpb_alien_shooter::title() const {
@@ -57,6 +62,8 @@ namespace jpb {
     mj::game_result jpb_alien_shooter::play([[maybe_unused]] const mj::game_data& data) {
         _player.update();
         _enemy.update();
+        _ammo_sprites.clear();
+        _text_generator.generate(80, -70, bn::to_string<4> (_player.get_missile_count()), _ammo_sprites);
 
         _player.shoot(_missiles);
         
