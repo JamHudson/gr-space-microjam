@@ -53,6 +53,8 @@ any_game_name::any_game_name(int completed_games, const mj::game_data& data) :
     }
     
     _moon_sprite = bn::sprite_items::moon.create_sprite(_moon_x, _moon_y);
+    _moon_anim = bn::create_sprite_animate_action_forever(
+                *_moon_sprite, 15, bn::sprite_items::moon.tiles_item(), 0, 1, 2, 3);
     
     _player.emplace(0, -20);
 
@@ -86,6 +88,10 @@ int any_game_name::total_frames() const {
 mj::game_result any_game_name::play([[maybe_unused]] const mj::game_data& data) {
     if (data.pending_frames < 480 && !_text_sprites.empty()) {
         _text_sprites.clear();
+    }
+
+    if(_moon_anim) {
+        _moon_anim->update();
     }
 
     if (_player) {

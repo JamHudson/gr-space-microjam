@@ -5,6 +5,7 @@
 #include "bn_fixed.h"
 #include "bn_sprite_ptr.h"
 #include "bn_display.h"
+#include "bn_sprite_animate_actions.h"
 
 // FLY ACROSS THE SCREEN TO INCREASE DIFFICULTY
 namespace knc {
@@ -12,7 +13,7 @@ namespace knc {
         static constexpr bn::fixed OFFSCREEN_X = bn::display::width() / 2 + 32;
 
 public:
-    static constexpr bn::fixed COLLISION_RADIUS = 12;
+    static constexpr bn::fixed COLLISION_RADIUS = 10;
 
     // create a shooting star at a given position with a given speed
     shooting_star(bn::fixed_point position, bn::fixed speed);
@@ -31,6 +32,9 @@ public:
 
 private:
     bn::sprite_ptr _sprite;
+
+    // 4 frame looping animation like planet
+    bn::sprite_animate_action<4> _animation;
     bn::fixed_point _position;
     bn::fixed _speed;
 };
