@@ -7,7 +7,7 @@
 #include "bn_array.h"
 #include "cat/cat_player.h"
 #include "cat/cat_enemy.h"
-#include "bn_sprite_items_cat_star.h"
+#include "cat/cat_star.h"
 #include "bn_regular_bg_ptr.h"
 #include "bn_sprite_text_generator.h"
 #include "bn_vector.h"
@@ -83,7 +83,7 @@ namespace cat
         cat_player _player;
         cat_enemy _enemy;
 
-        bn::array<bn::optional<bn::sprite_ptr>, _total_stars> _stars;
+        bn::array<bn::optional<cat::star>, _total_stars> _stars;
         int _stars_collected;
         bool _lost;
        

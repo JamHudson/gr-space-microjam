@@ -1,7 +1,7 @@
 #include "cat/cat_cat_stellar_game.h"
 
 #include "mj/mj_game_list.h"
-#include "bn_sprite_items_cat_star.h"
+#include "cat/cat_star.h"
 #include "bn_sprite_items_cat_enemy.h"
 #include "bn_regular_bg_items_cat_background.h"
 #include "bn_sprite_text_generator.h"
@@ -10,6 +10,7 @@
 #include "bn_vector.h"
 #include "bn_string.h"
 
+//background 240 x 160
 //anonymous namespace 
 namespace
 {
@@ -46,7 +47,7 @@ cat_cat_stellar_game::cat_cat_stellar_game([[maybe_unused]] int completed_games,
     for(int i = 0; i < _total_stars; ++i) {
         bn::fixed x = bn::fixed(data.random.get_int(200)) - 100; 
         bn::fixed y = bn::fixed(data.random.get_int(120)) - 60; 
-        _stars[i] = bn::sprite_items::cat_star.create_sprite({x, y});
+        _stars[i].emplace(x.integer(), y.integer());
     }
     _update_score_display();
 }
@@ -60,7 +61,7 @@ bn::fixed cat_cat_stellar_game::_recommended_player_speed(mj::difficulty_level d
         case mj::difficulty_level::NORMAL:
             return 2.0;
         case mj::difficulty_level::HARD:
-            return 1.5;
+            return 1.65;
         default:
             return 2.0;
     }
@@ -86,13 +87,13 @@ bn::fixed cat_cat_stellar_game::_recommended_enemy_speed(mj::difficulty_level di
     switch(difficulty)
     {
         case mj::difficulty_level::EASY:
-            return 0.4;
+            return 0.2;
         case mj::difficulty_level::NORMAL:
-            return 0.6;
+            return 0.4;
         case mj::difficulty_level::HARD:
-            return 0.8;
-        default:
             return 0.6;
+        default:
+            return 0.2;
     }
 }
 
@@ -143,6 +144,11 @@ mj::game_result cat_cat_stellar_game::play([[maybe_unused]] const mj::game_data&
 {
     _player.update();
     _enemy.update(_player.position());
+
+    for(auto& star : _stars){
+        if(star.has_value()) star->update();
+    }
+
     _check_collection();
 
     if(_enemy.collides_with(_player.position()))
@@ -176,16 +182,18 @@ void cat_cat_stellar_game::_check_collection()
 
     for(auto& star : _stars)
     {
-        if(star.has_value())
+        if(star.has_value() && !star-> is_collected(
+
+        ))
         {
-            bn::fixed dx = player_pos.x() - star->x();
-            bn::fixed dy = player_pos.y() - star->y();
+            bn::fixed dx = player_pos.x() - star->sprite().x();
+            bn::fixed dy = player_pos.y() - star->sprite().y();
             // squared distance avoids needing sqrt
             bn::fixed dist_sq = (dx * dx) + (dy * dy);
 
             if(dist_sq < _collect_distance * _collect_distance)
             {
-                star.reset(); // hides the sprite and frees it
+                star->collect();
                 _stars_collected++;
                 _update_score_display();
             }
