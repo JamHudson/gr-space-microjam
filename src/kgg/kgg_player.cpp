@@ -22,11 +22,6 @@ void player::update()
     if(bn::keypad::right_held()) //right movement
         x += 1;
 
-    //if(bn::keypad::up_held())
-        //y -= 1;
-
-    //if(bn::keypad::down_held())
-        //y += 1;
 
     const bn::fixed min_x = -bn::display::width() / 2 + 8; // left and right limits
     const bn::fixed max_x = bn::display::width() / 2 - 8;
@@ -41,7 +36,6 @@ void player::update()
         x = max_x;
     }
 
-    //_sprite.set_position(x, y);
     _sprite.set_x(x);
 }
 

@@ -30,6 +30,7 @@ public:
     void fade_out(const mj::game_data& data) override;
 
 private:
+    const mj::game_data& _data;
     bn::fixed _rock_speed = 3.5;
     bn::fixed _speed(mj::difficulty_level difficulty);
     int _spawn_limit = 50;

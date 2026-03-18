@@ -34,7 +34,8 @@ bn::fixed kgg_game_name::_speed(mj::difficulty_level difficulty)
 
 kgg_game_name::kgg_game_name(int completed_games, const mj::game_data& data)
 : mj::game("kgg"),
-_background(bn::regular_bg_items::kgg_background.create_bg())
+  _data(data),
+  _background(bn::regular_bg_items::kgg_background.create_bg())
 {
     _rock_speed = _speed(recommended_difficulty_level(completed_games, data));
 
@@ -47,7 +48,7 @@ _background(bn::regular_bg_items::kgg_background.create_bg())
 
 bn::string<16> kgg_game_name::title() const
 {
-    return "Move Left Right";
+    return "Dodge the Rockss";
 }
 
 int kgg_game_name::total_frames() const
@@ -75,10 +76,9 @@ mj::game_result kgg_game_name::play([[maybe_unused]] const mj::game_data& data)
 
         if(_rocks.size() < _rocks.max_size())
         {
-            static bn::random random;
-            // chossing a random left right position at the top  
+            bn::random& random = _data.random;
             int random_x = random.get_int(-bn::display::width() / 2 + 8,
-                                          bn::display::width() / 2 - 8);
+                                        bn::display::width() / 2 - 8);
 
             // creates a rock high up, so it falls down into view                            
             _rocks.push_back(rock(random_x, -70, _rock_speed));
