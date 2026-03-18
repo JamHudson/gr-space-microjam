@@ -16,7 +16,7 @@
 namespace axo
 {
 
-    static constexpr bn::size OBSTACLE_SIZE = {16, 16};
+    static constexpr bn::size OBSTACLE_SIZE = {16, 32};
 
     /**
      * A sprite flying through space!
@@ -45,6 +45,7 @@ namespace axo
     private:
         // The sprite to display the obstacle
         bn::sprite_ptr _sprite;
+        bn::sprite_animate_action<4> _sprite_action;
         // The pixels/frame the player moves in each dimension
         bn::fixed _speed;
         // size
