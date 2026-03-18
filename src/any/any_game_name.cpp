@@ -34,7 +34,7 @@ any_game_name::any_game_name(int completed_games, const mj::game_data& data) :
     _completed_games(completed_games)
 {
 
-    play_sound(bn::sound_items::wave8, completed_games, data);
+    play_sound(bn::sound_items::space_theme, completed_games, data);
 
     mj::difficulty_level difficulty = recommended_difficulty_level(completed_games, data);
 
@@ -95,7 +95,7 @@ mj::game_result any_game_name::play([[maybe_unused]] const mj::game_data& data) 
     int elapsed_frames = total_frames() - data.pending_frames;
 
     if (elapsed_frames > 0 && elapsed_frames % 445 == 0) {
-        play_sound(bn::sound_items::wave8, _completed_games, data);
+        play_sound(bn::sound_items::space_theme, _completed_games, data);
     }
 
     if (data.pending_frames < 480 && !_text_sprites.empty()) {
