@@ -44,12 +44,7 @@ namespace knc {
         if(_difficulty == mj::difficulty_level::NORMAL || _difficulty == mj::difficulty_level::HARD) {
             _planets.push_back(planet(bn::fixed_point(30, -440), speed));
             _stars.push_back(shooting_star(bn::fixed_point(-120, -30), speed));
-            _stars.push_back(shooting_star(bn::fixed_point(-240, 18), speed));
-        }
-        // hard only get star3
-        if(_difficulty == mj::difficulty_level::HARD) {
-            _stars.push_back(shooting_star(bn::fixed_point(-360, 0), speed));
-            // enemy stays at (1000,1000) until delay expires
+            _stars.push_back(shooting_star(bn::fixed_point(-340, 0), speed));
         }
     }
 

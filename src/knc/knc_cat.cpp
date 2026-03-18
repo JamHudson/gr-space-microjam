@@ -6,6 +6,7 @@ namespace knc {
 
     cat::cat(bn::fixed_point starting_position, bn::fixed speed) :
     _sprite(bn::sprite_items::cat_spaceship.create_sprite(starting_position)),
+    _animation(bn::create_sprite_animate_action_forever(_sprite, 8, bn::sprite_items::cat_spaceship.tiles_item(), 0,1,2,3)),
     _position(starting_position),
     _speed(speed)
 {}
@@ -24,6 +25,7 @@ void cat::update() {
     }
 
     _sprite.set_position(_position);
+    _animation.update(); 
 }
 
 bn::fixed_point cat::position() const {

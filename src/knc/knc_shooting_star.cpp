@@ -6,6 +6,7 @@ namespace knc {
 // spawn shooting star
 shooting_star::shooting_star(bn::fixed_point position, bn::fixed speed) :
     _sprite(bn::sprite_items::shootingstar.create_sprite(position)),
+    _animation(bn::create_sprite_animate_action_forever(_sprite, 8, bn::sprite_items::shootingstar.tiles_item(), 0,1,2,3)),
     _position(position),
     _speed(speed)
 {}
@@ -14,6 +15,7 @@ shooting_star::shooting_star(bn::fixed_point position, bn::fixed speed) :
 void shooting_star::update() {
     _position.set_x(_position.x() + _speed);
     _sprite.set_position(_position);
+    _animation.update();
 }
 
 // return current position for collision detection
