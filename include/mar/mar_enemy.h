@@ -6,6 +6,7 @@
 #include <bn_rect.h>
 
 #include "mar/mar_bounds.h"
+#include "bn_sprite_animate_actions.h"
 
 // All game functions/classes/variables/constants scoped to the namespace
 namespace mar
@@ -34,10 +35,12 @@ namespace mar
     private:
         // The sprite to display the enemy
         bn::sprite_ptr _sprite;
+        bn::sprite_animate_action<3> _sprite_action;
         // The pixels/frame the enemy moves in each dimension
         bn::fixed _speed;
     // The rectangle used for collision detection
         bn::rect _rect;
+
     };
 
 }
