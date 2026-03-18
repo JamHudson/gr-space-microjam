@@ -3,7 +3,6 @@
 #include "bn_keypad.h"
 #include "bn_sprite_ptr.h"
 #include "bn_sprite_animate_actions.h"
-#include "bn_sound_items.h"
 
 #include "mj/mj_game_list.h"
 
@@ -17,30 +16,33 @@ namespace
 MJ_GAME_LIST_ADD(reb::reb_eclipse_game)
 MJ_GAME_LIST_ADD_CODE_CREDITS(code_credits)
 MJ_GAME_LIST_ADD_GRAPHICS_CREDITS(graphics_credits)
-// MJ_GAME_LIST_ADD_MUSIC_CREDITS(music_credits)
 MJ_GAME_LIST_ADD_SFX_CREDITS(sfx_credits)
 
 namespace reb
 {
+    static constexpr int sun_x = -105; 
+    static constexpr int sun_y = -0; 
+    static constexpr int moon_x_init = 28; 
+    static constexpr int moon_y_init = 270; 
+
     reb_eclipse_game::reb_eclipse_game([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data& data) :
         mj::game("reb"),
-        _moon(earth_x, earth_y, 28, 270) // start above earth
+        _sunSprite(bn::sprite_items::reb_sun.create_sprite(sun_x,sun_y)),
+        _earthSprite(bn::sprite_items::reb_earth.create_sprite(_earth_x,_earth_y)),
+        _moon(_earth_x, _earth_y, moon_x_init, moon_y_init), // start above earth
+        _sunAnimation(bn::create_sprite_animate_action_forever(_sunSprite, 6, bn::sprite_items::reb_sun.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8, 9)),
+        _victory(false)
     {
-        _sunAnimation = bn::create_sprite_animate_action_forever(_sunSprite, 6, bn::sprite_items::reb_sun.tiles_item(), 0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-        play_sound(bn::sound_items::aub_tower, completed_games, data);
     }
 
     void reb_eclipse_game::fade_in([[maybe_unused]] const mj::game_data& data)
     {
-        _sunSprite.set_position(-100, 0);
-        _earthSprite.set_position(75, 0);
-        _victory = false;
     }
 
     mj::game_result reb_eclipse_game::play([[maybe_unused]] const mj::game_data& data)
     {
         _moon.update();
-        _sunAnimation->update();
+        _sunAnimation.update();
 
         mj::game_result result(victory(), false);
 

@@ -17,8 +17,7 @@ namespace reb
     {
         public:
 
-            static constexpr int minimum_frames = 3 * 60; 
-            static constexpr int maximum_frames = 5 * 60; 
+            static constexpr int game_length = 5 * 60; 
 
             reb_eclipse_game(int completed_games, const mj::game_data& data);
 
@@ -29,7 +28,7 @@ namespace reb
 
             [[nodiscard]] int total_frames() const final
             {
-                return minimum_frames;
+                return game_length;
             }
 
             void fade_in(const mj::game_data& data) final;
@@ -41,12 +40,12 @@ namespace reb
             void fade_out(const mj::game_data& data) final;
 
         private:
-            bn::sprite_ptr _sunSprite = bn::sprite_items::reb_sun.create_sprite(-105,0);
-            bn::sprite_ptr _earthSprite = bn::sprite_items::reb_earth.create_sprite(75,0);
+            bn::sprite_ptr _sunSprite;
+            bn::sprite_ptr _earthSprite;
             moon _moon;
-            bn::optional<bn::sprite_animate_action<10>> _sunAnimation;
-            static constexpr bn::fixed earth_x =  75;
-            static constexpr bn::fixed earth_y =   0;
+            bn::sprite_animate_action<10> _sunAnimation;
+            static constexpr bn::fixed _earth_x =  75;
+            static constexpr bn::fixed _earth_y =   0;
             bool _victory;
     };
 }
