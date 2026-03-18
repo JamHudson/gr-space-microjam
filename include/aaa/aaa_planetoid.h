@@ -70,6 +70,7 @@ namespace aaa
         bn::fixed _recommended_enemy_speed(mj::difficulty_level difficulty);
         bn::fixed _asteroids;
         bn::vector<bn::sprite_ptr, 3> _hpSprites;
+        bn::vector<bn::sprite_ptr, 2> _text_sprites;
         bn::regular_bg_ptr _background;
         int _hp;
         void _checkHit(bn::vector<aaa_enemy, 12> &enemies, bn::vector<aaa_Bullet, 25> &bullets, bn::fixed &asteroids);

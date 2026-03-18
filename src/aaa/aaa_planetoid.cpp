@@ -99,6 +99,9 @@ namespace aaa
             }
         }
 
+        _text_sprites.clear();
+        data.big_text_generator.generate(-105, -50, bn::to_string<2>(_asteroids), _text_sprites);
+
         _checkHit(_enemies, _bullets, _asteroids);
         BN_LOG(_asteroids);
 
@@ -131,11 +134,14 @@ namespace aaa
         return 10;
     }
 
-    bn::fixed aaa_planetoids::_recommended_enemy_speed(mj::difficulty_level difficulty){
-        if (difficulty == mj::difficulty_level::EASY){
+    bn::fixed aaa_planetoids::_recommended_enemy_speed(mj::difficulty_level difficulty)
+    {
+        if (difficulty == mj::difficulty_level::EASY)
+        {
             return .6;
         }
-        else if (difficulty == mj::difficulty_level::NORMAL){
+        else if (difficulty == mj::difficulty_level::NORMAL)
+        {
             return .7;
         }
         return .8;
