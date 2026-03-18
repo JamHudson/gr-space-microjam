@@ -20,12 +20,13 @@ MJ_GAME_LIST_ADD_SFX_CREDITS(sfx_credits)
 
 namespace reb
 {
-    static constexpr int sun_x = -105; 
-    static constexpr int sun_y = -0; 
-    static constexpr int moon_x_init = 28; 
-    static constexpr int moon_y_init = 270;
+    static constexpr bn::fixed sun_x = -105; 
+    static constexpr bn::fixed sun_y = 0; 
+    static constexpr bn::fixed moon_x_init = 28; 
+    static constexpr bn::fixed moon_y_init = 270;
+    static constexpr bn::fixed human_error_allowed = 160; // reduce to make game more difficult, increase to make game more lenient
 
-    bool solar_eclipse_check(bn::fixed, bn::fixed, bn::fixed, bn::fixed, bn::fixed, bn::fixed);
+    bool solar_eclipse_check(bn::fixed, bn::fixed, bn::fixed, bn::fixed);
 
     reb_eclipse_game::reb_eclipse_game([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data& data) :
         mj::game("reb"),
@@ -63,21 +64,22 @@ namespace reb
     bool reb_eclipse_game::victory() const
     {
         // logic to check is earth is between sun and moon
-        return (solar_eclipse_check(sun_x, sun_y, _moon.x(), _moon.y(), _earth_x, _earth_y));
+        return (solar_eclipse_check(_moon.x(), _moon.y(), _earth_x, _earth_y));
     }
 
     void reb_eclipse_game::fade_out([[maybe_unused]] const mj::game_data& data)
     {
     }
 
-    bool solar_eclipse_check(bn::fixed sun_x, bn::fixed sun_y, bn::fixed moon_x, bn::fixed moon_y, bn::fixed earth_x, bn::fixed earth_y)
+    bool solar_eclipse_check(bn::fixed curr_moon_x, bn::fixed curr_moon_y, bn::fixed curr_earth_x, bn::fixed curr_earth_y)
     {
         // check if all three are in line
-        bn::fixed in_line = (earth_x - sun_x) * (moon_y - sun_y) - (earth_y - sun_y) * (moon_x - sun_x);
-        if (in_line != 0) return false;
+        bn::fixed in_line = (curr_earth_x - sun_x) * (curr_moon_y - sun_y) - (curr_earth_y - sun_y) * (curr_moon_x - sun_x);
+        if (in_line < 0) { in_line *= -1; } // handle large negative numbers
+        if (in_line > human_error_allowed) return false;
 
         // check the moon if the moon is in the middle
-        if (earth_x < moon_x) return false;
+        if (curr_earth_x < curr_moon_x) return false;
 
         return true;
     }
