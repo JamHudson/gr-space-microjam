@@ -5,6 +5,10 @@
 #include "bn_random.h"
 #include "bn_regular_bg_items_kgg_background.h"
 
+#include "bn_sound_items.h" 
+
+#include "bn_log.h"
+
 
 namespace {
 constexpr bn::string_view code_credits[] = { "Gurpinder Gill" };
@@ -33,7 +37,13 @@ kgg_game_name::kgg_game_name(int completed_games, const mj::game_data& data)
 _background(bn::regular_bg_items::kgg_background.create_bg())
 {
     _rock_speed = _speed(recommended_difficulty_level(completed_games, data));
+
+    // boss music for this game
+    play_sound(bn::sound_items::kgg_boss, completed_games, data); 
+
+
 }
+
 
 bn::string<16> kgg_game_name::title() const
 {
