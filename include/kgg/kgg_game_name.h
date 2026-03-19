@@ -1,9 +1,6 @@
 #ifndef KGG_GAME_NAME_H
 #define KGG_GAME_NAME_H
 
-#include "bn_sprite_text_generator.h"
-#include "bn_sprite_font.h"
-#include "mj/mj_sprite_font.h"
 #include "bn_sprite_ptr.h"
 #include "mj/mj_game.h"
 #include "bn_vector.h"
@@ -49,7 +46,6 @@ private:
     static constexpr int _lose_delay = 60; //about 1 second
     int _score = 0; // keeps track of survival score
     
-    bn::sprite_text_generator _text_generator{ mj::sprite_font };
     bn::vector<bn::sprite_ptr, 32> _score_sprites;
 
 

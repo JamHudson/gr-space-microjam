@@ -48,7 +48,7 @@ kgg_game_name::kgg_game_name(int completed_games, const mj::game_data& data)
 
 bn::string<16> kgg_game_name::title() const
 {
-    return "Avoid the Rockss";
+    return "Avoid the Rocks";
 }
 
 int kgg_game_name::total_frames() const
@@ -115,7 +115,7 @@ mj::game_result kgg_game_name::play([[maybe_unused]] const mj::game_data& data)
         bn::string<32> score_text = "Score: ";
         score_text.append(bn::to_string<16>(_score));
 
-        _text_generator.generate(-100, -70, score_text, _score_sprites);
+        _data.text_generator.generate(-100, -70, score_text, _score_sprites);
     }
 
     return mj::game_result();
