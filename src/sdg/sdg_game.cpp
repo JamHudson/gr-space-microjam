@@ -123,17 +123,17 @@ namespace sdg{
         }
 
         // resets arrows when incorrect, with some angry flair
-        if (_player._incorrect_input) {
+        if (_player.incorrect_input) {
             bn::sound_items::sdg_incorrectsfx.play();
             for (int i = 0; i < _player.challenge().size(); i++) {
                 _arrows[i].set_tiles(arrow_items[pattern[i]]->tiles_item(), 2);
             }
-            _player._incorrect_input = false;
+            _player.incorrect_input = false;
         }
 
-        if (_player._correct_input) {
+        if (_player.correct_input) {
             bn::sound_items::sdg_correctsfx.play();
-            _player._correct_input = false;
+            _player.correct_input = false;
         }
 
         mj::game_result result(victory(), false);

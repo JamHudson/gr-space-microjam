@@ -29,10 +29,10 @@ namespace sdg {
             int progress() const;
 
             // Keeps track if an incorrect input was inputted
-            bool _incorrect_input;
+            bool incorrect_input;
 
             // Keeps track if a correct input was inputted. Used for sound effects only.
-            bool _correct_input;
+            bool correct_input;
         private:
             // Default value for when no input is detected.
             int _input = -1;

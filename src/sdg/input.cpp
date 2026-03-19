@@ -6,7 +6,7 @@
 namespace sdg {
 
 input::input(int difficulty, bn::random& random) : 
-_incorrect_input(false), _correct_input(false), _progress(0), _diff(difficulty), _random(random)
+incorrect_input(false), correct_input(false), _progress(0), _diff(difficulty), _random(random)
 {
     // loop to add random code inputs
     for (int i = 0; i < _diff; i++) {
@@ -33,14 +33,14 @@ void input::update() {
 
     if (_input != -1 && _progress < _challenge.size()) {
         if(_input == input::_challenge[_progress]) {
-            _correct_input = true;
+            correct_input = true;
             _progress += 1;
             BN_LOG("CODE IS CORRECT!");
         }
         // reset if incorrect
         else {
             _progress = 0;
-            _incorrect_input = true;
+            incorrect_input = true;
             BN_LOG("CODE INCORRECT!");
         }
     }
