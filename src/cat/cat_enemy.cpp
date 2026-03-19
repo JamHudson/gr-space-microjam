@@ -1,5 +1,6 @@
 #include "cat/cat_enemy.h"
 #include "bn_sprite_items_cat_enemy.h"
+#include "bn_sound_items.h"
 
 namespace cat
 {

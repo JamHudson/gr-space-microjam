@@ -1,6 +1,7 @@
 #include "black_hole.h"
 #include "bn_affine_bg_items_background.h"
 #include "bn_sprite_items_black_hole.h"
+#include "bn_sound_items.h"
 
 // All game functions/classes/variables/constants scoped to the namespace
 namespace sno

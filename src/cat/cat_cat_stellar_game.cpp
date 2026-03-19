@@ -10,14 +10,15 @@
 #include "bn_vector.h"
 #include "bn_string.h"
 
-//background 240 x 160
+#include "bn_sound_items.h"
+
 //anonymous namespace 
 namespace
 {
     constexpr bn::string_view code_credits[] = { "Nadia Ivanishchuk", "Paris Allkurti" };
     constexpr bn::string_view graphics_credits[] = { "Paris Allkurti", "Nadia Ivanishchuk" };
-    constexpr bn::string_view sfx_credits[] = {""};
-    constexpr bn::string_view music_credits[] = {""};
+    constexpr bn::string_view sfx_credits[] = {"IgnasD", "den_yes"};
+    constexpr bn::string_view music_credits[] = {"mutantleg"};
 }
 
 // All game functions/classes/variables/constants scoped to the namespace
@@ -32,7 +33,7 @@ namespace cat
  * @param data shared information, such as a rng and number of frames left in the microgame
  */
 cat_cat_stellar_game::cat_cat_stellar_game([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data& data) :
-    mj::game("cat"),
+    mj::game("cat"),_completed_games(completed_games),
     _difficulty(recommended_difficulty_level(completed_games, data)),
     _stars_to_win(_recommended_stars_to_win(_difficulty)),
     _player({0, 0}, _recommended_player_speed(_difficulty)),
@@ -43,7 +44,9 @@ cat_cat_stellar_game::cat_cat_stellar_game([[maybe_unused]] int completed_games,
     _lost(false),
     _text_generator(data.text_generator),
     _background(bn::regular_bg_items::cat_background.create_bg(0, 0))
-{
+{  
+    play_sound(bn::sound_items::cat_catinspace, _completed_games, data);
+
     for(int i = 0; i < _total_stars; ++i) {
         bn::fixed x = bn::fixed(data.random.get_int(200)) - 100; 
         bn::fixed y = bn::fixed(data.random.get_int(120)) - 60; 
@@ -149,10 +152,11 @@ mj::game_result cat_cat_stellar_game::play([[maybe_unused]] const mj::game_data&
         if(star.has_value()) star->update();
     }
 
-    _check_collection();
+    _check_collection(data);
 
     if(_enemy.collides_with(_player.position()))
     {
+        play_sound(bn::sound_items::cat_gameover, _completed_games, data);
         _lost = true;
         return { true, false };
     }
@@ -176,7 +180,7 @@ bool cat_cat_stellar_game::victory() const {
 /**
  * Checks if the player has collected any stars and updates the score accordingly.
  */
-void cat_cat_stellar_game::_check_collection()
+void cat_cat_stellar_game::_check_collection(const mj::game_data& data)
 {
     bn::fixed_point player_pos = _player.position();
 
@@ -194,6 +198,7 @@ void cat_cat_stellar_game::_check_collection()
             if(dist_sq < _collect_distance * _collect_distance)
             {
                 star->collect();
+                play_sound(bn::sound_items::cat_meow, _completed_games, data);
                 _stars_collected++;
                 _update_score_display();
             }

@@ -1,11 +1,12 @@
 #include "knc/knc_astro_cat.h"
 #include "mj/mj_game_list.h"
+#include "bn_sound_items.h"
 
 namespace {
-    constexpr bn::string_view code_credits[] = { "knc" };
-    constexpr bn::string_view graphics_credits[] = { "knc" };
-    constexpr bn::string_view sfx_credits[] = { "" };
-    constexpr bn::string_view music_credits[] = { "" };
+constexpr bn::string_view code_credits[] = { "knc" };
+constexpr bn::string_view graphics_credits[] = { "knc" };
+constexpr bn::string_view sfx_credits[] = { "qubodup " };
+constexpr bn::string_view music_credits[] = { "CodeManu " };
 }
 
 namespace knc {
@@ -29,10 +30,11 @@ namespace knc {
         _background(),
         _cat(bn::fixed_point(0,40), 2),
         _difficulty(recommended_difficulty_level(completed_games, data)),
-      _enemy1(bn::fixed_point(0, -5000), _initial_speed(completed_games, data), 1),
+        _enemy1(bn::fixed_point(0, -5000), _initial_speed(completed_games, data), 1),
         _enemy1_direction(true),
         _enemy1_delay(180),
-        _hit(false)
+        _hit(false),
+        _completed_games(completed_games)
     {
         bn::fixed speed = _initial_speed(completed_games, data);
         // easy + normal + hard
@@ -92,7 +94,9 @@ namespace knc {
             p.update();
             if(p.off_screen()){
                 p = planet(bn::fixed_point(bn::fixed(data.random.get_int(200)) - 100, -80), speed);
-            }
+                // play sound when planet fall
+                bn::sound_items::knc_planet_sound.play(); 
+    }
         }
 
         // update all shooting stars
@@ -113,6 +117,8 @@ namespace knc {
         for(planet& p : _planets) {
             if(p.collides_with(_cat.position(), cat::COLLISION_RADIUS)) {
                 _hit = true;
+                // play this sound when collision happend
+                bn::sound_items::knc_lose.play();
             }
         }
 
@@ -120,6 +126,8 @@ namespace knc {
         for(shooting_star& s : _stars) {
             if(s.collides_with(_cat.position(), cat::COLLISION_RADIUS)) {
                 _hit = true;
+                // play this sound when collision happend
+                bn::sound_items::knc_lose.play();
             }
         }
 
@@ -136,7 +144,10 @@ namespace knc {
 
     // if cat never got hit - Win
     bool knc_astro_cat::victory() const { return !_hit; }
-    void knc_astro_cat::fade_in(const mj::game_data&) {}
+    void knc_astro_cat::fade_in(const mj::game_data& data)
+    {
+        play_sound(bn::sound_items::knc_magic_space, _completed_games, data);
+    }
     void knc_astro_cat::fade_out(const mj::game_data&) {}
 
 } // namespace knc

@@ -1,0 +1,5 @@
+https://opengameart.org/content/energy-drain
+
+CCO License
+Author: qubodup
+This is actually based on one of the shouts from http://freesound.org/people/qubodup/sounds/160743, although I don't remember what I did. Probably something similar to the instructions in time-magic but with maxed-out freeverb settings.

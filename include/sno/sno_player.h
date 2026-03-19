@@ -4,6 +4,7 @@
 #include <bn_fixed_point.h>
 #include <bn_sprite_ptr.h>
 #include <bn_display.h>
+#include <bn_sound_items.h>
 
 // All game functions/classes/variables/constants scoped to the namespace
 namespace sno
@@ -42,6 +43,11 @@ namespace sno
         void attraction(bn::fixed_point bh_position);
 
         /**
+         * Screen wrap function to wrap the player to the opposite side, left to right,
+         */
+        void screenWrap();
+
+        /**
          * Returns whether the player has left the screen
          *
          * @return true if the player has left the screen, false if it is still on the screen
@@ -65,6 +71,8 @@ namespace sno
         bn::sprite_ptr _sprite;
         // The pixels/frame the player moves in each dimension
         bn::fixed _speed;
+
+        int _movement_sound_timer = 0;
     };
 
 }
