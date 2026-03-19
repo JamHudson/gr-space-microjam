@@ -62,6 +62,12 @@ namespace mar
         }
         else if (bn::keypad::down_held() && _sprite.y() < MAX_Y)
         {
+            //  SFX for when player down_held
+            if (bn::keypad::down_pressed())
+            {
+                bn::sound_items::mar_whoosh.play();
+            }
+
             if (_sprite_action.current_index() > 2 && isFrameEven)
             {
                 _sprite_action.set_current_index(1);
