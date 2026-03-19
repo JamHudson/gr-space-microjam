@@ -50,6 +50,7 @@ axo_aquatic_galaxy_defense::axo_aquatic_galaxy_defense([[maybe_unused]] int comp
                 _obstacles.push_back(obstacle(-bn::display::width() / 2 + 20 + (i * 30), 
                 -bn::display::height(),_recommended_obstacle_speed(recommended_difficulty_level(completed_games, data)), OBSTACLE_SIZE));
             }
+            play_sound(bn::music_items::axo_fight_music, completed_games, data);
         }    
 
 
@@ -100,7 +101,7 @@ mj::game_result axo_aquatic_galaxy_defense::play([[maybe_unused]] const mj::game
                 auto blast_y = bubble.y();
                 _player.destroy_bubble(b); // Destroy the bubble
                 _blasts.push_back(blast(blast_x, blast_y)); // Spawn blast
-                game::play_sound(bn::sound_items::rock_break, 0, data); // play sound if bubble hits obstacle
+                play_sound(bn::sound_items::axo_rock_break, 0, data); // play sound if bubble hits obstacle
                 destroy_obstacle(i); // Destroy the obstacle
                 break;
             }

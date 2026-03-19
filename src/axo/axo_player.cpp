@@ -82,7 +82,7 @@ void player::update() {
         if(bubbles.size() < bubbles.max_size()) {
             bubbles.push_back(bubble(_sprite.x(), _sprite.y() - 5, BUBBLE_SPEED, 
             BUBBLE_SIZE));
-        bn::sound_items::pop.play(); // play bubble sound
+        bn::sound_items::axo_pop.play(); // play bubble sound
         }
     }
 
