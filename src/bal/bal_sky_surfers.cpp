@@ -11,8 +11,8 @@ namespace
 {
     constexpr bn::string_view code_credits[] = { "Pasha", "Hosea" };
     constexpr bn::string_view graphics_credits[] = { "Hosea" };
-    constexpr bn::string_view sfx_credits[] = {""};
-    constexpr bn::string_view music_credits[] = {""};
+    constexpr bn::string_view sfx_credits[] = {"Luke.RUSTLTD"};
+    constexpr bn::string_view music_credits[] = {"sodatax"};
 
     constexpr bn::size ROCK_SIZE = {8, 8};
     constexpr int MIN_X = -bn::display::width() / 2;
@@ -86,8 +86,7 @@ mj::game_result bal_sky_surfers::play([[maybe_unused]] const mj::game_data& data
         
         //checks if player got hit by a rock
         if(_rocks[i].bounding_box.intersects(_bal_player.bounding_box)){
-            //FOR WHEN EVER YOU WNAT TO PLAY IT
-            bn::sound_items::ball_explosion.play();
+            bn::sound_items::bal_explosion.play();
             _player_intersects = true;
             result.exit = true;
             return result;
