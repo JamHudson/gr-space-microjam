@@ -76,7 +76,9 @@ namespace cat
         // The number of stars the player must collect to win
         static constexpr int _total_stars = 10;
         static constexpr bn::fixed _collect_distance = 16;
-
+        
+        int _completed_games; 
+        
         mj::difficulty_level _difficulty;
         int _stars_to_win;
 
@@ -90,9 +92,10 @@ namespace cat
         const bn::sprite_text_generator& _text_generator;
         bn::vector<bn::sprite_ptr, 16> _score_sprites;
 
-        void _check_collection();
+        void _check_collection(const mj::game_data& data);
         void _update_score_display();
 
+        
         bn::regular_bg_ptr _background;
 
         //helper functions
