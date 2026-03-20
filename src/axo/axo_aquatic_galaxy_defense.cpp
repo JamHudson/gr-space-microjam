@@ -88,6 +88,7 @@ void axo_aquatic_galaxy_defense::destroy_obstacle(int index) {
  */
 mj::game_result axo_aquatic_galaxy_defense::play([[maybe_unused]] const mj::game_data& data)
 {
+
     // update the player position
     _player.update();
 
