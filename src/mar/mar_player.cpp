@@ -69,7 +69,7 @@ namespace mar
             //  SFX for when player down_held
             if (bn::keypad::down_pressed())
             {
-                bn::sound_items::mar_whoosh.play();
+                bn::sound_items::mar_boost.play();
             }
             _sprite_action.set_current_index(isFrameEven?2:1);
             _sprite_action.set_wait_updates(framesLeft);
