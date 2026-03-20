@@ -11,7 +11,7 @@
 // String arrays for the credits can go in an anonymous namespace
 namespace
 {
-    constexpr bn::string_view code_credits[] = {"Andrew Onjang & Mason Sabin"};
+    constexpr bn::string_view code_credits[] = {"Andrew Onjang", "Mason Sabin"};
     constexpr bn::string_view graphics_credits[] = {"Mason Sabin"};
     constexpr bn::string_view sfx_credits[] = {"Bart"};
     constexpr bn::string_view music_credits[] = {"Cleyton Kauffman"};

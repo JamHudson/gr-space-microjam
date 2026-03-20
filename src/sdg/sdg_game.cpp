@@ -1,18 +1,3 @@
-// TODO:
-/*
- - Add vector to store set amount of inputs (lets start easy with 3)
- - Input detection
- - Add logic for correct inputs + win condition if all correct
- - Reset code if incorrect input is detected
- PAST THIS POINT IS ADVANCED
- - win animation
- - loss animation
- - difficulty scaling
- - sfx
- - background animations while gameplay is occuring
- - music?
-*/
-
 #include <bn_sprite_ptr.h>
 #include <bn_sprite_animate_actions.h>
 #include <bn_regular_bg_animate_actions.h>
@@ -32,7 +17,7 @@
 
 namespace
 {
-    constexpr bn::string_view code_credits[] = { "Iker & Kevin James \"bigtoe\" Miclea" };
+    constexpr bn::string_view code_credits[] = { "Iker", "Kevin James \"bigtoe\" Miclea" };
     constexpr bn::string_view graphics_credits[] = { "Kevin James \"bigtoe\" Miclea" };
     constexpr bn::string_view sfx_credits[] = {""};
     constexpr bn::string_view music_credits[] = {""};

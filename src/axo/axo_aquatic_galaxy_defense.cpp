@@ -14,7 +14,7 @@ namespace
 {
     constexpr bn::string_view code_credits[] = { "Jaronie", "Galatear" };
     constexpr bn::string_view graphics_credits[] = { "Galatear", "Jaronie" };
-    constexpr bn::string_view sfx_credits[] = {"farfadet46,themightyglider"};
+    constexpr bn::string_view sfx_credits[] = {"farfadet46", "themightyglider"};
     constexpr bn::string_view music_credits[] = {"Ville Nousiainen"};
 }
 

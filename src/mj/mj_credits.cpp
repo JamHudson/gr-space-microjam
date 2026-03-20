@@ -81,7 +81,7 @@ bool credits::update()
 
 void credits::_generate_text_items()
 {
-    _text_items.push_back("GBA Microjam Template");
+    _text_items.push_back("Green River College C23 Microjam");
     _text_items.push_back("");
     _text_items.push_back("");
     _text_items.push_back("");
@@ -91,6 +91,7 @@ void credits::_generate_text_items()
     bn::unordered_set<bn::string_view, 512> text_items_set;
     text_items_set.insert("GValiente");
     text_items_set.insert("exelotl");
+    text_items_set.insert("Auberon López");
 
     for(bn::span<const bn::string_view> game_credits : game_list::get_code_credits())
     {

@@ -14,8 +14,8 @@
 #include "mj/mj_game_list.h"
 
 namespace {
-    constexpr bn::string_view code_credits[] = { "Anthony Margullis, Yousif Sultan" };
-    constexpr bn::string_view graphics_credits[] = { "Anthony Margullis, Yousif Sultan" };
+    constexpr bn::string_view code_credits[] = { "Anthony Margullis", "Yousif Sultan" };
+    constexpr bn::string_view graphics_credits[] = { "Anthony Margullis", "Yousif Sultan" };
     constexpr bn::string_view sfx_credits[] = {"sodatax"};
     constexpr bn::string_view music_credits[] = {"Anthony Margullis"};
 }
