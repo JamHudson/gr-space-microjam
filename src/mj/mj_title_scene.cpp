@@ -163,8 +163,7 @@ void title_scene::_update_menu()
             _cursor_sprite.set_y(credits_y);
         }
 
-        // TODO: Your cursor sound
-        //bn::sound_items::mj_pause_cursor.play();
+        bn::sound_items::mj_select_option_sfx.play();
     }
     else if(bn::keypad::down_pressed())
     {
@@ -179,9 +178,7 @@ void title_scene::_update_menu()
         {
             _cursor_sprite.set_y(play_y);
         }
-
-        // TODO: Your cursor sound
-        //bn::sound_items::mj_pause_cursor.play();
+        bn::sound_items::mj_select_option_sfx.play();
     }
     else if(bn::keypad::a_pressed())
     {
@@ -210,8 +207,7 @@ void title_scene::_update_menu()
 
         _sprites_fade_action.emplace(fade_frames, 1);
         _cursor_sprite.set_tiles(bn::sprite_items::mj_small_pumpkin.tiles_item(), 13);
-        // TODO: YOUR STARTING GAME SOUND
-        //bn::sound_items::mj_pause_begin.play();
+        bn::sound_items::mj_confirm_option_sfx.play();
     }
 }
 

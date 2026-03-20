@@ -27,6 +27,8 @@
 #include "bn_regular_bg_items_mj_big_pumpkin_12.h"
 #include "bn_regular_bg_items_mj_white_bg.h"
 
+#include "bn_sound_items.h"
+
 namespace mj
 {
 
@@ -44,7 +46,7 @@ namespace
     constexpr bn::fixed defeat_music_volume = 0.6;
 
     constexpr int next_game_music_position = 8;
-    constexpr bn::fixed next_game_music_volume = 0.65;
+    constexpr bn::fixed next_game_music_volume = 0.45;
 
     constexpr int speed_up_music_position = 16;
     constexpr bn::fixed speed_up_music_volume = 0.55;
@@ -52,12 +54,9 @@ namespace
     constexpr int game_over_music_position = 18;
     constexpr bn::fixed game_over_music_volume = 0.6;
 
-    void _play_music([[maybe_unused]] int position, [[maybe_unused]] bn::fixed volume, [[maybe_unused]] bn::fixed tempo)
+    void _play_music(bn::sound_item sound, [[maybe_unused]] bn::fixed volume, [[maybe_unused]] bn::fixed tempo)
     {
-        // TODO: Replace with your music
-        //bn::music_items::YOUR_MUSIC.play(volume);
-        // bn::music::set_position(position);
-        // bn::music::set_tempo(tempo);
+        sound.play(volume,tempo, 0);
     }
 }
 
@@ -195,7 +194,7 @@ bn::optional<scene_type> game_scene::update()
                 {
                     _game_over_scene.reset(new game_over_scene(_completed_games, _core));
 
-                    _play_music(game_over_music_position, game_over_music_volume, 1);
+                    _play_music(bn::sound_items::mj_theme_leaderboard, game_over_music_volume, 1);
                 }
             }
 
@@ -222,7 +221,8 @@ void game_scene::_create_next_game_transition()
 {
     _next_game_transition.emplace(_completed_games);
 
-    _play_music(next_game_music_position, next_game_music_volume, _music_tempo);
+    // Feels a bit excessive, leaving the next game sound off for now
+    _play_music(bn::sound_items::mj_theme_next_game, next_game_music_volume, _music_tempo);
 }
 
 void game_scene::_update_play()
@@ -294,7 +294,7 @@ bool game_scene::_update_fade(bool update_again)
                     _lives.look_down();
                     big_pumpkin_visible = false;
 
-                    _play_music(speed_up_music_position, speed_up_music_volume, 1.075);
+                    _play_music(bn::sound_items::mj_theme_speed_up_game, speed_up_music_volume, 1.075);
                 }
                 else
                 {
@@ -385,12 +385,12 @@ bool game_scene::_update_fade(bool update_again)
                     if(_victory)
                     {
                         _play_music(
-                            _completed_games % 2 ? second_victory_music_position : first_victory_music_position,
+                            bn::sound_items::mj_theme_won_game,
                             victory_music_volume, _music_tempo);
                     }
                     else
                     {
-                        _play_music(defeat_music_position, defeat_music_volume, _music_tempo);
+                        _play_music(bn::sound_items::mj_theme_lost_game, defeat_music_volume, _music_tempo);
                     }
                 }
                 else

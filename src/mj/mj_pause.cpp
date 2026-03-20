@@ -186,8 +186,7 @@ bool pause::update(bool& exit)
             _sound_master_volume = bn::sound::master_volume();
             bn::sound::stop_all();
             bn::sound::set_master_volume(1);
-            // TODO: Your pause begin sound
-            //bn::sound_items::mj_pause_begin.play();
+            bn::sound_items::mj_confirm_option_sfx.play();
         }
         else
         {
