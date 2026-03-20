@@ -1,0 +1,11 @@
+https://opengameart.org/content/gameboy-dmg-random-nanoloop-tune
+
+CC0 license
+
+I have a modded GameBoy with a Nanoloop cartridge. My first effort. Gotta start somewhere :)
+
+Like it, loathe it, use it. Or not.......
+
+ 
+P.S. The zip contains the separate loops from each channel. Some sound like they start 
+half way through but they loop ok (maybe). That's how they came out of Nanoloop anyhoo....
