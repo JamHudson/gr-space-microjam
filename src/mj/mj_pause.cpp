@@ -140,8 +140,7 @@ bool pause::update(bool& exit)
                 if(_exit_selected)
                 {
                     exit = true;
-                    // TODO: Your pause exit sound
-                    //bn::sound_items::PAUSE_EXIT.play();
+                    bn::sound_items::mj_confirm_option_sfx.play();
                 }
                 else
                 {
@@ -155,16 +154,14 @@ bool pause::update(bool& exit)
             else if(bn::keypad::left_pressed() || bn::keypad::right_pressed())
             {
                 _exit_selected = ! _exit_selected;
-                // TODO: Your pause cursor sound
-                //bn::sound_items::PAUSE_CURSOR.play();
+                bn::sound_items::mj_select_option_sfx.play();
             }
         }
 
         if(back_to_game)
         {
             _back_to_game_delay_frames = 14;
-            // TODO: Your pause exit sound
-            //bn::sound_items::PAUSE_EXIT.play();
+            bn::sound_items::mj_confirm_option_sfx.play();
         }
     }
 
