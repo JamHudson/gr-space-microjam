@@ -19,9 +19,6 @@ public:
 
 private:
     bn::vector<bn::sprite_ptr, 16> _sprites;
-    bn::optional<bn::sprite_ptr> _fire_sprite;
-    bn::vector<bn::sprite_tiles_ptr, 2> _tiles;
-    bn::sprite_palette_ptr _palette;
     int _fire_counter = 0;
 };
 
