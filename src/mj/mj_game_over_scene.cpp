@@ -11,7 +11,7 @@
 #include "bn_regular_bg_items_mj_game_over_backdrop.h"
 #include "bn_sound_items.h"
 #include "bn_sprite_items_mj_font.h"
-#include "bn_sprite_palette_items_mj_big_font_highlight.h"
+#include "bn_sprite_palette_items_mj_hilight.h"
 
 namespace mj
 {
@@ -30,7 +30,7 @@ game_over_scene::game_over_scene(int completed_games, core& core) :
     bn::blending::set_intensity_alpha(0);
 
     const bn::sprite_palette_item& regular_palette = bn::sprite_items::mj_font.palette_item();
-    const bn::sprite_palette_item& highlight_palette = bn::sprite_palette_items::mj_big_font_highlight;
+    const bn::sprite_palette_item& highlight_palette = bn::sprite_palette_items::mj_hilight;
     bn::sprite_text_generator& text_generator = core.big_text_generator();
     text_generator.set_bg_priority(0);
     text_generator.set_center_alignment();

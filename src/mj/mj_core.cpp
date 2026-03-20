@@ -4,7 +4,6 @@
 #include "bn_keypad.h"
 #include "bn_version.h"
 
-#include "mj/mj_big_sprite_font.h"
 #include "mj/mj_build_config.h"
 #include "mj/mj_small_sprite_font.h"
 #include "mj/mj_sprite_font.h"
@@ -30,7 +29,7 @@ namespace
 core::core() :
     _text_generator(sprite_font),
     _small_text_generator(small_sprite_font),
-    _big_text_generator(big_sprite_font)
+    _big_text_generator(sprite_font) // Temporarily not having a different font for big
 {
     _sram_data.init();
 }

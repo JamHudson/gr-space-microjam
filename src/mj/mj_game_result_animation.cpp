@@ -5,7 +5,6 @@
 #include "bn_math.h"
 #include "bn_sprite_palette_ptr.h"
 
-#include "bn_affine_bg_items_mj_speed_up.h"
 #include "bn_affine_bg_items_mj_big_ufo.h"
 
 namespace mj
