@@ -10,6 +10,7 @@
 #include "bn_sprite_items_astronaut.h"
 #include "bn_sprite_text_generator.h"
 #include "bn_regular_bg_ptr.h"
+#include "bn_sprite_animate_actions.h"
 
 
 namespace any {
@@ -82,9 +83,11 @@ namespace any {
      static constexpr int _moon_x = 85; 
 
      bn::optional<bn::sprite_ptr> _moon_sprite;
+     bn::optional<bn::sprite_animate_action<4>> _moon_anim;
      bn::fixed _moon_y = -60;
      bn::vector<bn::sprite_ptr, 8> _text_sprites;
      bn::optional<bn::regular_bg_ptr> _background;
+     int _completed_games;
 };
 
 }

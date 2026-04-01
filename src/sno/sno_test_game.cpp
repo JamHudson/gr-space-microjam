@@ -4,16 +4,17 @@
 #include "bn_keypad.h"
 #include "bn_display.h"
 #include "bn_sprite_ptr.h"
+#include "bn_sound_items.h"
 
 #include "mj/mj_game_list.h"
 
 // String arrays for the credits can go in an anonymous namespace
 namespace
 {
-    constexpr bn::string_view code_credits[] = {"Andrew Onjang & Mason Sabin"};
+    constexpr bn::string_view code_credits[] = {"Andrew Onjang", "Mason Sabin"};
     constexpr bn::string_view graphics_credits[] = {"Mason Sabin"};
-    constexpr bn::string_view sfx_credits[] = {""};
-    constexpr bn::string_view music_credits[] = {""};
+    constexpr bn::string_view sfx_credits[] = {"Bart"};
+    constexpr bn::string_view music_credits[] = {"Cleyton Kauffman"};
 }
 
 // Macros used to add game to game list
@@ -30,8 +31,8 @@ namespace sno
                                                                                                                      _player(sno::player({50, 30}, _recommended_player_speed(recommended_difficulty_level(completed_games, data)))),
                                                                                                                      _black_hole(sno::black_hole({0, 0}))
     {
+        play_sound(bn::sound_items::sno_bg_theme, completed_games, data);
     }
-
     bn::string<16> sno_test_game::title() const
     {
         return "Avoid the void!";
@@ -53,17 +54,20 @@ namespace sno
 
     int sno_test_game::total_frames() const
     {
-        return 600;
+        return 360; // 6 x 60 fps
     }
 
     mj::game_result sno_test_game::play([[maybe_unused]] const mj::game_data &data)
     {
         _player.update();
+        _player.screenWrap();
         _player.attraction(_black_hole.position());
         _black_hole.update();
 
         // Check if player collides with black hole
-        if (_player.collides_with(_black_hole.position(), 8))
+        // set to be 16 px away from the center of the black hole, there should be
+        // slight overlap with the player sprite but not too much.
+        if (_player.collides_with(_black_hole.position(), 16))
         {
             _player_captured = true;
         }

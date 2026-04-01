@@ -38,7 +38,7 @@ private:
     bn::deque<uint8_t, 8> _game_history;
     bn::optional<game_manager> _game_manager;
     bn::optional<bn::regular_bg_ptr> _white_bg;
-    bn::optional<bn::regular_bg_ptr> _big_pumpkin;
+    bn::optional<bn::regular_bg_ptr> _big_ufo;
     bn::unique_ptr<game_result_animation> _result_animation;
     bn::unique_ptr<game_result_animation> _speed_inc_animation;
     bn::optional<next_game_transition> _next_game_transition;
@@ -52,13 +52,13 @@ private:
     int _completed_games;
     int _pending_frames = 0;
     int _total_frames = 1;
-    int _big_pumpkin_stage;
-    int _big_pumpkin_counter = 0;
+    int _big_ufo_stage;
+    int _big_ufo_counter = 0;
     int _fade_in_frames = 0;
     int _fade_out_frames = 0;
     bool _playing = false;
     bool _victory = false;
-    bool _big_pumpkin_inc;
+    bool _big_ufo_inc;
     bool _first_game_played = false;
 
     void _create_next_game_transition();
@@ -67,7 +67,7 @@ private:
 
     [[nodiscard]] bool _update_fade(bool update_again);
 
-    void _update_big_pumpkin(const bn::regular_bg_item* bg_item);
+    void _update_big_ufo(const bn::regular_bg_item* bg_item);
 
     void _update_volume_dec();
 };

@@ -14,6 +14,8 @@ namespace axo
      */
     obstacle::obstacle(bn::fixed starting_x, bn::fixed starting_y, bn::fixed speed, bn::size obstacle_size) :
         _sprite(bn::sprite_items::axo_obstacle.create_sprite(bn::fixed_point(starting_x, starting_y))),
+        _sprite_action(bn::create_sprite_animate_action_forever(_sprite, 10, 
+            bn::sprite_items::axo_obstacle.tiles_item(), 0,1,2,3)),
         _speed(speed),
         _size(obstacle_size),
         _hitbox(_sprite, _size)
@@ -24,12 +26,7 @@ namespace axo
     {
         // moves obstacles downwards
         _sprite.set_y(_sprite.y() + _speed * 1.2);
-        // rotate the sprite as it moves
-        if(_sprite.rotation_angle() >= 360) {
-            _sprite.set_rotation_angle(0);
-        }
-        _sprite.set_rotation_angle(_sprite.rotation_angle() + 5);
-
+        _sprite_action.update();
     }
 
     const hitbox &obstacle::get_hitbox() const

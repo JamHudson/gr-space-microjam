@@ -5,8 +5,7 @@
 #include "bn_math.h"
 #include "bn_sprite_palette_ptr.h"
 
-#include "bn_affine_bg_items_mj_speed_up.h"
-#include "bn_affine_bg_items_mj_big_pumpkin.h"
+#include "bn_affine_bg_items_mj_big_ufo.h"
 
 namespace mj
 {
@@ -457,7 +456,7 @@ bool game_result_animation::update()
 game_result_animation::game_result_animation() :
     _delay_frames(8),
     _pending_frames(_frames(100)),
-    _head(bn::affine_bg_items::mj_big_pumpkin.create_bg(0, 0))
+    _head(bn::affine_bg_items::mj_big_ufo.create_bg(0, 0))
 {
     _head.set_wrapping_enabled(false);
     _head.set_priority(1);

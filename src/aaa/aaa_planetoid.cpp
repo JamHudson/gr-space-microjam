@@ -9,13 +9,14 @@
 #include "bn_regular_bg_items_aaa_bg.h"
 #include <bn_core.h>
 #include <bn_log.h>
+#include "bn_sound_items.h"
 
 namespace
 {
-    constexpr bn::string_view code_credits[] = {"KJ, Adam Kurfurst"};
-    constexpr bn::string_view graphics_credits[] = {"KJ, Adam Kurfurst"};
-    constexpr bn::string_view sfx_credits[] = {""};
-    constexpr bn::string_view music_credits[] = {""};
+    constexpr bn::string_view code_credits[] = {"KJ", "Adam Kurfurst"};
+    constexpr bn::string_view graphics_credits[] = {"KJ", "Adam Kurfurst"};
+    constexpr bn::string_view sfx_credits[] = {"farfadet46", "TinyWorlds"};
+    constexpr bn::string_view music_credits[] = {"Joth"};
 }
 
 // Macros used to add game to game list
@@ -54,8 +55,9 @@ namespace aaa
 
             bn::fixed_point pos(x, y);
 
-            _enemies.push_back(aaa_enemy({pos}, .6));
+            _enemies.push_back(aaa_enemy({pos}, _recommended_enemy_speed(recommended_difficulty_level(completed_games, data))));
         }
+        play_sound(bn::sound_items::aaa_music, completed_games, data);
     }
 
     bn::string<16> aaa_planetoids::title() const
@@ -81,6 +83,7 @@ namespace aaa
             if (_bullets.size() != _bullets.max_size())
             {
                 _bullets.push_back(aaa_Bullet(bn::fixed_point(0, 0), 5, _player.getAngle()));
+                bn::sound_items::aaa_shoot.play();
             }
         }
 
@@ -91,10 +94,14 @@ namespace aaa
             {
                 _hp--;
                 _asteroids = _asteroids - 1; // Even if the asteroid hits the player, it still counts as towards the win conditon
+                bn::sound_items::aaa_explosion.play();
                 _enemies.erase(_enemies.begin() + i);
                 return mj::game_result(_hp == 0, false); // the game will end if the player is hit 3 times.
             }
         }
+
+        _text_sprites.clear();
+        data.big_text_generator.generate(-105, -50, bn::to_string<2>(_asteroids), _text_sprites);
 
         _checkHit(_enemies, _bullets, _asteroids);
         BN_LOG(_asteroids);
@@ -128,6 +135,19 @@ namespace aaa
         return 10;
     }
 
+    bn::fixed aaa_planetoids::_recommended_enemy_speed(mj::difficulty_level difficulty)
+    {
+        if (difficulty == mj::difficulty_level::EASY)
+        {
+            return .6;
+        }
+        else if (difficulty == mj::difficulty_level::NORMAL)
+        {
+            return .7;
+        }
+        return .8;
+    }
+
     void aaa_planetoids::_checkHit(bn::vector<aaa_enemy, 12> &enemies, bn::vector<aaa_Bullet, 25> &bullets, bn::fixed &asteroids)
     {
         // I am aware that this is a nested for loop, but trying to make this operate inside the classes would have required passing in the information for the enemy vector
@@ -140,17 +160,17 @@ namespace aaa
             {
                 if (bullets[i].getRect().intersects(enemies[j].getRect()))
                 {
-                    
+
                     if (!_enemies[j].is_destroyed()) // this makes sure that the enemies destroyed boolean isnt already toggle to prevent duplicate calls
                     {
                         _enemies[j].destroyedAnimation(); // toggles boolean to create/start animation
-                        asteroids = asteroids - 1;      // placing this asteroid decrementer here worked best for triggering correct win condition
+                        asteroids = asteroids - 1;        // placing this asteroid decrementer here worked best for triggering correct win condition
+                        bn::sound_items::aaa_explosion.play();
                     }
                     if (_enemies[j].animation_done()) // only deletes if animation is finished
                     {
                         _enemies.erase(_enemies.begin() + j);
                     }
-                    
                 }
             }
             if (_outOfBounds(bullets[i]))
@@ -167,10 +187,12 @@ namespace aaa
         return bX > bn::display::width() / 2 || bY > bn::display::height() / 2 || bX < -bn::display::width() / 2 || bY < -bn::display::height() / 2;
     }
 
-    void aaa_planetoids::_updateHP(int &hp){
+    void aaa_planetoids::_updateHP(int &hp)
+    {
         int x = -100;
         _hpSprites.clear();
-        for (int i = 0; i < hp; i++){
+        for (int i = 0; i < hp; i++)
+        {
             _hpSprites.push_back(bn::sprite_items::aaa_heart.create_sprite(x, -70));
             x += 20;
         }

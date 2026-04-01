@@ -4,6 +4,8 @@
 
 #include "bn_sprite_items_cat_player.h"
 
+#include "bn_sound_items.h"
+
 namespace cat {
 
 cat_player::cat_player(bn::fixed_point starting_position, bn::fixed speed) :

@@ -1,8 +1,9 @@
-#ifndef MAR_PLAYER_H 
+#ifndef MAR_PLAYER_H
 #define MAR_PLAYER_H
 
 #include <bn_fixed_point.h>
 #include <bn_sprite_ptr.h>
+#include "bn_sprite_animate_actions.h"
 
 #include "bn_rect.h"
 #include "mar/mar_bounds.h"
@@ -29,8 +30,9 @@ namespace mar
         /**
          * returns
          */
-        bn::rect &rect() { 
-            return _rect; 
+        bn::rect &rect()
+        {
+            return _rect;
         }
 
         /**
@@ -41,6 +43,9 @@ namespace mar
     private:
         // The sprite to display the player
         bn::sprite_ptr _sprite;
+        // Only 5 tiles but added 6th ghost tile for animation math
+        bn::sprite_animate_action<6> _sprite_action;
+
         // The pixels/frame the player moves in each dimension
         bn::fixed _speed;
         bn::rect _rect;

@@ -7,7 +7,7 @@
 #include "bn_array.h"
 #include "cat/cat_player.h"
 #include "cat/cat_enemy.h"
-#include "bn_sprite_items_cat_star.h"
+#include "cat/cat_star.h"
 #include "bn_regular_bg_ptr.h"
 #include "bn_sprite_text_generator.h"
 #include "bn_vector.h"
@@ -76,23 +76,26 @@ namespace cat
         // The number of stars the player must collect to win
         static constexpr int _total_stars = 10;
         static constexpr bn::fixed _collect_distance = 16;
-
+        
+        int _completed_games; 
+        
         mj::difficulty_level _difficulty;
         int _stars_to_win;
 
         cat_player _player;
         cat_enemy _enemy;
 
-        bn::array<bn::optional<bn::sprite_ptr>, _total_stars> _stars;
+        bn::array<bn::optional<cat::star>, _total_stars> _stars;
         int _stars_collected;
         bool _lost;
        
         const bn::sprite_text_generator& _text_generator;
         bn::vector<bn::sprite_ptr, 16> _score_sprites;
 
-        void _check_collection();
+        void _check_collection(const mj::game_data& data);
         void _update_score_display();
 
+        
         bn::regular_bg_ptr _background;
 
         //helper functions

@@ -6,6 +6,7 @@
 #include "axo/axo_bubble.h"
 #include "bn_sprite_items_axo_axolotl.h"
 
+
 // All game functions/classes/variables/constants scoped to the namespace
 namespace axo {
 
@@ -19,7 +20,9 @@ player::player(bn::fixed_point starting_position, bn::fixed speed, bn::size play
     _sprite(bn::sprite_items::axo_axolotl.create_sprite(starting_position)),
     _speed(speed),
     _size(player_size),
-    _hitbox(_sprite, _size)
+    _hitbox(_sprite, bn::size(14, 20), bn::fixed_point(0, -4))
+    // The player sprite has negative space around its tail, so I shrank the hitbox and slid it up.
+    // Better for close calls!
 {
 }
 
@@ -27,23 +30,59 @@ player::player(bn::fixed_point starting_position, bn::fixed speed, bn::size play
  * Reads from the d-pad and moves the player by one frame accordingly.
  */
 void player::update() {
+    // TODO: Determine frame rate of animation. 5 feels too fast, but it will work for right now.
     if(bn::keypad::left_held()) {
         _sprite.set_x(_sprite.x() - _speed);
+        if(!_is_animating) {
+            _is_animating = true;
+            _sprite.set_horizontal_flip(false);
+            _sprite_action = bn::create_sprite_animate_action_forever(_sprite, 5, 
+                bn::sprite_items::axo_axolotl.tiles_item(), 5, 6);
+        }
     }
-    if(bn::keypad::right_held()) {
+    else if(bn::keypad::right_held()) {
         _sprite.set_x(_sprite.x() + _speed);
+        if(!_is_animating) {
+            _is_animating = true;
+            _sprite.set_horizontal_flip(true);
+            _sprite_action = bn::create_sprite_animate_action_forever(_sprite, 5, 
+                bn::sprite_items::axo_axolotl.tiles_item(), 5, 6);
+        }
     }
-    if(bn::keypad::up_held()) {
+    else if(bn::keypad::up_held()) {
         _sprite.set_y(_sprite.y() - _speed);
+        if(!_is_animating) {
+            _is_animating = true;
+            _sprite.set_horizontal_flip(false);
+            _sprite_action = bn::create_sprite_animate_action_forever(_sprite, 5, 
+                bn::sprite_items::axo_axolotl.tiles_item(), 1, 2);
+        }
     }
-    if(bn::keypad::down_held()) {
+    else if(bn::keypad::down_held()) {
         _sprite.set_y(_sprite.y() + _speed);
+        if(!_is_animating) {
+            _is_animating = true;
+            _sprite.set_horizontal_flip(false);
+            _sprite_action = bn::create_sprite_animate_action_forever(_sprite, 5, 
+                bn::sprite_items::axo_axolotl.tiles_item(), 3, 4);
+        }
+    }
+    else {
+        _sprite_action.reset();
+        _is_animating = false;
+        _sprite.set_horizontal_flip(false);
+        _sprite.set_tiles(bn::sprite_items::axo_axolotl.tiles_item().create_tiles(0));
+    }
+
+    if(_sprite_action) {
+        _sprite_action->update();
     }
 
     if(bn::keypad::a_pressed() || bn::keypad::b_pressed()) {
         if(bubbles.size() < bubbles.max_size()) {
-            bubbles.push_back(bubble(_sprite.x(), _sprite.y(), BUBBLE_SPEED, 
+            bubbles.push_back(bubble(_sprite.x(), _sprite.y() - 5, BUBBLE_SPEED, 
             BUBBLE_SIZE));
+        bn::sound_items::axo_pop.play(); // play bubble sound
         }
     }
 
@@ -85,6 +124,10 @@ void player::update() {
 
     void player::kill() {
         _alive = false;
+    }
+
+    void player::destroy_bubble(int index) {
+        bubbles.erase(bubbles.begin() + index);
     }
 
     void player::clear_bubbles() {

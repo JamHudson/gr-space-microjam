@@ -39,6 +39,7 @@ namespace knc {
         bool _enemy1_direction;
         int  _enemy1_delay;
         bool _hit;
+        int  _completed_games;
     };
 }
 

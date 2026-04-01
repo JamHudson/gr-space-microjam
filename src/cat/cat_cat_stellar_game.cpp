@@ -1,7 +1,7 @@
 #include "cat/cat_cat_stellar_game.h"
 
 #include "mj/mj_game_list.h"
-#include "bn_sprite_items_cat_star.h"
+#include "cat/cat_star.h"
 #include "bn_sprite_items_cat_enemy.h"
 #include "bn_regular_bg_items_cat_background.h"
 #include "bn_sprite_text_generator.h"
@@ -10,13 +10,15 @@
 #include "bn_vector.h"
 #include "bn_string.h"
 
+#include "bn_sound_items.h"
+
 //anonymous namespace 
 namespace
 {
     constexpr bn::string_view code_credits[] = { "Nadia Ivanishchuk", "Paris Allkurti" };
     constexpr bn::string_view graphics_credits[] = { "Paris Allkurti", "Nadia Ivanishchuk" };
-    constexpr bn::string_view sfx_credits[] = {""};
-    constexpr bn::string_view music_credits[] = {""};
+    constexpr bn::string_view sfx_credits[] = {"IgnasD", "den_yes"};
+    constexpr bn::string_view music_credits[] = {"mutantleg"};
 }
 
 // All game functions/classes/variables/constants scoped to the namespace
@@ -31,7 +33,7 @@ namespace cat
  * @param data shared information, such as a rng and number of frames left in the microgame
  */
 cat_cat_stellar_game::cat_cat_stellar_game([[maybe_unused]] int completed_games, [[maybe_unused]] const mj::game_data& data) :
-    mj::game("cat"),
+    mj::game("cat"),_completed_games(completed_games),
     _difficulty(recommended_difficulty_level(completed_games, data)),
     _stars_to_win(_recommended_stars_to_win(_difficulty)),
     _player({0, 0}, _recommended_player_speed(_difficulty)),
@@ -42,11 +44,13 @@ cat_cat_stellar_game::cat_cat_stellar_game([[maybe_unused]] int completed_games,
     _lost(false),
     _text_generator(data.text_generator),
     _background(bn::regular_bg_items::cat_background.create_bg(0, 0))
-{
+{  
+    play_sound(bn::sound_items::cat_catinspace, _completed_games, data);
+
     for(int i = 0; i < _total_stars; ++i) {
         bn::fixed x = bn::fixed(data.random.get_int(200)) - 100; 
         bn::fixed y = bn::fixed(data.random.get_int(120)) - 60; 
-        _stars[i] = bn::sprite_items::cat_star.create_sprite({x, y});
+        _stars[i].emplace(x.integer(), y.integer());
     }
     _update_score_display();
 }
@@ -60,7 +64,7 @@ bn::fixed cat_cat_stellar_game::_recommended_player_speed(mj::difficulty_level d
         case mj::difficulty_level::NORMAL:
             return 2.0;
         case mj::difficulty_level::HARD:
-            return 1.5;
+            return 1.65;
         default:
             return 2.0;
     }
@@ -86,13 +90,13 @@ bn::fixed cat_cat_stellar_game::_recommended_enemy_speed(mj::difficulty_level di
     switch(difficulty)
     {
         case mj::difficulty_level::EASY:
-            return 0.4;
+            return 0.2;
         case mj::difficulty_level::NORMAL:
-            return 0.6;
+            return 0.4;
         case mj::difficulty_level::HARD:
-            return 0.8;
-        default:
             return 0.6;
+        default:
+            return 0.2;
     }
 }
 
@@ -143,10 +147,16 @@ mj::game_result cat_cat_stellar_game::play([[maybe_unused]] const mj::game_data&
 {
     _player.update();
     _enemy.update(_player.position());
-    _check_collection();
+
+    for(auto& star : _stars){
+        if(star.has_value()) star->update();
+    }
+
+    _check_collection(data);
 
     if(_enemy.collides_with(_player.position()))
     {
+        play_sound(bn::sound_items::cat_gameover, _completed_games, data);
         _lost = true;
         return { true, false };
     }
@@ -170,22 +180,25 @@ bool cat_cat_stellar_game::victory() const {
 /**
  * Checks if the player has collected any stars and updates the score accordingly.
  */
-void cat_cat_stellar_game::_check_collection()
+void cat_cat_stellar_game::_check_collection(const mj::game_data& data)
 {
     bn::fixed_point player_pos = _player.position();
 
     for(auto& star : _stars)
     {
-        if(star.has_value())
+        if(star.has_value() && !star-> is_collected(
+
+        ))
         {
-            bn::fixed dx = player_pos.x() - star->x();
-            bn::fixed dy = player_pos.y() - star->y();
+            bn::fixed dx = player_pos.x() - star->sprite().x();
+            bn::fixed dy = player_pos.y() - star->sprite().y();
             // squared distance avoids needing sqrt
             bn::fixed dist_sq = (dx * dx) + (dy * dy);
 
             if(dist_sq < _collect_distance * _collect_distance)
             {
-                star.reset(); // hides the sprite and frees it
+                star->collect();
+                play_sound(bn::sound_items::cat_meow, _completed_games, data);
                 _stars_collected++;
                 _update_score_display();
             }

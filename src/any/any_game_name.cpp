@@ -9,14 +9,15 @@
 #include "bn_display.h"
 #include "bn_sprite_ptr.h"
 #include "bn_regular_bg_items_bg.h"
+#include "bn_sound_items.h"
 
 #include "mj/mj_game_list.h"
 
 namespace {
-    constexpr bn::string_view code_credits[] = { "Anthony Margullis, Yousif Sultan" };
-    constexpr bn::string_view graphics_credits[] = { "Anthony Margullis, Yousif Sultan" };
-    constexpr bn::string_view sfx_credits[] = {""};
-    constexpr bn::string_view music_credits[] = {""};
+    constexpr bn::string_view code_credits[] = { "Anthony Margullis", "Yousif Sultan" };
+    constexpr bn::string_view graphics_credits[] = { "Anthony Margullis", "Yousif Sultan" };
+    constexpr bn::string_view sfx_credits[] = {"sodatax"};
+    constexpr bn::string_view music_credits[] = {"Anthony Margullis"};
 }
 
 MJ_GAME_LIST_ADD(any::any_game_name)
@@ -29,8 +30,12 @@ namespace any {
 
 any_game_name::any_game_name(int completed_games, const mj::game_data& data) :
     mj::game("any"),
-    _has_lost(false)
+    _has_lost(false),
+    _completed_games(completed_games)
 {
+
+    play_sound(bn::sound_items::any_space_theme, completed_games, data);
+
     mj::difficulty_level difficulty = recommended_difficulty_level(completed_games, data);
 
     if (difficulty == mj::difficulty_level::EASY) {
@@ -53,6 +58,8 @@ any_game_name::any_game_name(int completed_games, const mj::game_data& data) :
     }
     
     _moon_sprite = bn::sprite_items::moon.create_sprite(_moon_x, _moon_y);
+    _moon_anim = bn::create_sprite_animate_action_forever(
+                *_moon_sprite, 15, bn::sprite_items::moon.tiles_item(), 0, 1, 2, 3);
     
     _player.emplace(0, -20);
 
@@ -84,12 +91,27 @@ int any_game_name::total_frames() const {
 }
 
 mj::game_result any_game_name::play([[maybe_unused]] const mj::game_data& data) {
+
+    int elapsed_frames = total_frames() - data.pending_frames;
+
+    if (elapsed_frames > 0 && elapsed_frames % 445 == 0) {
+        play_sound(bn::sound_items::any_space_theme, _completed_games, data);
+    }
+
     if (data.pending_frames < 480 && !_text_sprites.empty()) {
         _text_sprites.clear();
     }
 
+    if(_moon_anim) {
+        _moon_anim->update();
+    }
+
     if (_player) {
         _player->update(bn::span<const platform>(_platforms, 3));
+
+        if (_player->dy() == -4.3) {
+            play_sound(bn::sound_items::any_spring_jump_sfx, _completed_games, data);
+        }
 
         if (_touched_moon()) { 
             return mj::game_result(true, true); // (finished, victory)

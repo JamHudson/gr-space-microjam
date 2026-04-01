@@ -20,14 +20,14 @@ namespace jas {
 
       private:
         // Construct text generator
-         const bn::sprite_text_generator& text_generator;
+         const bn::sprite_text_generator& _text_generator;
 
-         bn::vector<bn::sprite_ptr, 32> text_sprites;
+         bn::vector<bn::sprite_ptr, 32> _text_sprites;
 
         // Define text
-         const bn::string_view instructions = "Hold A, B, or up for thrusters!";
+         const bn::string_view _instructions = "Hold A, B, or up for thrusters!";
 
-         static constexpr bn::fixed_point TEXT_POSITION = {-100, -70};
+         static constexpr bn::fixed_point _TEXT_POSITION = {-100, -70};
     };
 }
 

@@ -11,14 +11,14 @@
 #include <bn_keypad.h>
 #include <bn_fixed_point.h>
 // Tutor debug
-#include "bn_sprite_items_mj_dot.h"
+#include "bn_sprite_items_mj_small_astro.h"
 
 namespace mj {
 
 chooser_scene::chooser_scene(core& core) :
     _core(core),
     _cursor_idx(_core.sram_data().chosen_game()),
-    _cursor(bn::sprite_items::mj_dot.create_sprite()) {
+    _cursor(bn::sprite_items::mj_small_astro.create_sprite(12)) {
         bn::backdrop::set_color(bn::color(0, 0, 0));
 
         auto& text_generator = core.small_text_generator();

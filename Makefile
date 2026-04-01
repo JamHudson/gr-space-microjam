@@ -36,8 +36,8 @@ DATA        :=
 GRAPHICS    :=  $(wildcard graphics/*)
 AUDIO       :=  $(wildcard audio/*)
 DMGAUDIO    :=  $(wildcard dmg_audio/*)
-ROMTITLE    :=  MJAM TMPL
-ROMCODE     :=  TMPL
+ROMTITLE    :=  MJAM GRC23
+ROMCODE     :=  C23
 USERFLAGS   :=  -DBN_CFG_AUDIO_MIXING_RATE=BN_AUDIO_MIXING_RATE_21_KHZ -DBN_CFG_AUDIO_MAX_MUSIC_CHANNELS=20
 USERASFLAGS :=  
 USERLDFLAGS	:=  

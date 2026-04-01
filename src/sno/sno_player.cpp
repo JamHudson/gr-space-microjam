@@ -24,21 +24,65 @@ namespace sno
      */
     void player::update()
     {
-        if (bn::keypad::left_held())
+        bool moving = false;
+
+            if (bn::keypad::left_held())
         {
             _sprite.set_x(_sprite.x() - _speed);
+            moving = true;
         }
         if (bn::keypad::right_held())
         {
             _sprite.set_x(_sprite.x() + _speed);
+            moving = true;
         }
         if (bn::keypad::up_held())
         {
             _sprite.set_y(_sprite.y() - _speed);
+            moving = true;
         }
         if (bn::keypad::down_held())
         {
             _sprite.set_y(_sprite.y() + _speed);
+            moving = true;
+        }
+        if (moving)
+        {
+            if (_movement_sound_timer == 0)
+            {
+                bn::sound_items::sno_ufo_sound.play();
+            }
+            _movement_sound_timer++;
+            // should retrigger the sound every 30 frames
+            if (_movement_sound_timer >= 30)
+            {
+                _movement_sound_timer = 0;
+            }
+        }
+        else
+        {
+            _movement_sound_timer = 0;
+        }
+    }
+
+    void player::screenWrap()
+    {
+        bn::fixed_point pos = _sprite.position();
+        if (pos.x() < MIN_X)
+        {
+            _sprite.set_x(MAX_X);
+        }
+        else if (pos.x() > MAX_X)
+        {
+            _sprite.set_x(MIN_X);
+        }
+        if (pos.y() < MIN_Y)
+        {
+            _sprite.set_y(MAX_Y);
+        }
+        else if (pos.y() > MAX_Y)
+        {
+            _sprite.set_y(MIN_Y);
         }
     }
 
@@ -61,20 +105,20 @@ namespace sno
 
         if (pos.x() < bh_position.x())
         {
-            _sprite.set_x(pos.x() + 1);
+            _sprite.set_x(pos.x() + .75);
         }
         else if (pos.x() > bh_position.x())
         {
-            _sprite.set_x(pos.x() - 1);
+            _sprite.set_x(pos.x() - .75);
         }
 
         if (pos.y() < bh_position.y())
         {
-            _sprite.set_y(pos.y() + 1);
+            _sprite.set_y(pos.y() + .75);
         }
         else if (pos.y() > bh_position.y())
         {
-            _sprite.set_y(pos.y() - 1);
+            _sprite.set_y(pos.y() - .75);
         }
     }
 

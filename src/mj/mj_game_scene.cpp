@@ -13,19 +13,21 @@
 #include "mj/mj_game_result_animation.h"
 #include "mj/mj_scene_type.h"
 
-#include "bn_regular_bg_items_mj_big_pumpkin_1.h"
-#include "bn_regular_bg_items_mj_big_pumpkin_2.h"
-#include "bn_regular_bg_items_mj_big_pumpkin_3.h"
-#include "bn_regular_bg_items_mj_big_pumpkin_4.h"
-#include "bn_regular_bg_items_mj_big_pumpkin_5.h"
-#include "bn_regular_bg_items_mj_big_pumpkin_6.h"
-#include "bn_regular_bg_items_mj_big_pumpkin_7.h"
-#include "bn_regular_bg_items_mj_big_pumpkin_8.h"
-#include "bn_regular_bg_items_mj_big_pumpkin_9.h"
-#include "bn_regular_bg_items_mj_big_pumpkin_10.h"
-#include "bn_regular_bg_items_mj_big_pumpkin_11.h"
-#include "bn_regular_bg_items_mj_big_pumpkin_12.h"
+#include "bn_regular_bg_items_mj_big_ufo_1.h"
+#include "bn_regular_bg_items_mj_big_ufo_2.h"
+#include "bn_regular_bg_items_mj_big_ufo_3.h"
+#include "bn_regular_bg_items_mj_big_ufo_4.h"
+#include "bn_regular_bg_items_mj_big_ufo_5.h"
+#include "bn_regular_bg_items_mj_big_ufo_6.h"
+#include "bn_regular_bg_items_mj_big_ufo_7.h"
+#include "bn_regular_bg_items_mj_big_ufo_8.h"
+#include "bn_regular_bg_items_mj_big_ufo_9.h"
+#include "bn_regular_bg_items_mj_big_ufo_10.h"
+#include "bn_regular_bg_items_mj_big_ufo_11.h"
+#include "bn_regular_bg_items_mj_big_ufo_12.h"
 #include "bn_regular_bg_items_mj_white_bg.h"
+
+#include "bn_sound_items.h"
 
 namespace mj
 {
@@ -44,7 +46,7 @@ namespace
     constexpr bn::fixed defeat_music_volume = 0.6;
 
     constexpr int next_game_music_position = 8;
-    constexpr bn::fixed next_game_music_volume = 0.65;
+    constexpr bn::fixed next_game_music_volume = 0.45;
 
     constexpr int speed_up_music_position = 16;
     constexpr bn::fixed speed_up_music_volume = 0.55;
@@ -52,12 +54,9 @@ namespace
     constexpr int game_over_music_position = 18;
     constexpr bn::fixed game_over_music_volume = 0.6;
 
-    void _play_music([[maybe_unused]] int position, [[maybe_unused]] bn::fixed volume, [[maybe_unused]] bn::fixed tempo)
+    void _play_music(bn::sound_item sound, [[maybe_unused]] bn::fixed volume, [[maybe_unused]] bn::fixed tempo)
     {
-        // TODO: Replace with your music
-        //bn::music_items::YOUR_MUSIC.play(volume);
-        // bn::music::set_position(position);
-        // bn::music::set_tempo(tempo);
+        sound.play(volume,tempo, 0);
     }
 }
 
@@ -67,9 +66,9 @@ game_scene::game_scene(bool start_with_zoom_out, core& core) :
     _pause(core),
     _music_tempo(game::recommended_music_tempo(MJ_INITIAL_COMPLETED_GAMES, _data)),
     _completed_games(MJ_INITIAL_COMPLETED_GAMES),
-    _big_pumpkin_stage(start_with_zoom_out ? 13 : 0),
+    _big_ufo_stage(start_with_zoom_out ? 13 : 0),
     _fade_in_frames(start_with_zoom_out ? 0 : fade_in_frames),
-    _big_pumpkin_inc(! start_with_zoom_out)
+    _big_ufo_inc(! start_with_zoom_out)
 {
     bn::bg_palettes::remove_transparent_color();
 
@@ -87,7 +86,7 @@ game_scene::game_scene(bool start_with_zoom_out, core& core) :
         bn::bg_palettes::set_fade(bn::colors::black, 1);
         bn::sprite_palettes::set_fade(bn::colors::black, 1);
 
-        _update_big_pumpkin(&bn::regular_bg_items::mj_big_pumpkin_1);
+        _update_big_ufo(&bn::regular_bg_items::mj_big_ufo_1);
     }
 
     _lives.show(false, false);
@@ -195,7 +194,7 @@ bn::optional<scene_type> game_scene::update()
                 {
                     _game_over_scene.reset(new game_over_scene(_completed_games, _core));
 
-                    _play_music(game_over_music_position, game_over_music_volume, 1);
+                    _play_music(bn::sound_items::mj_theme_leaderboard, game_over_music_volume, 1);
                 }
             }
 
@@ -222,7 +221,8 @@ void game_scene::_create_next_game_transition()
 {
     _next_game_transition.emplace(_completed_games);
 
-    _play_music(next_game_music_position, next_game_music_volume, _music_tempo);
+    // Feels a bit excessive, leaving the next game sound off for now
+    _play_music(bn::sound_items::mj_theme_next_game, next_game_music_volume, _music_tempo);
 }
 
 void game_scene::_update_play()
@@ -281,7 +281,7 @@ bool game_scene::_update_fade(bool update_again)
 
         if(! active)
         {
-            bool big_pumpkin_visible = true;
+            bool big_ufo_visible = true;
             _result_animation.reset();
             _lives.stop();
 
@@ -292,9 +292,9 @@ bool game_scene::_update_fade(bool update_again)
                     _music_tempo = game::recommended_music_tempo(_completed_games, _data);
                     _speed_inc_animation = game_result_animation::create_speed_inc();
                     _lives.look_down();
-                    big_pumpkin_visible = false;
+                    big_ufo_visible = false;
 
-                    _play_music(speed_up_music_position, speed_up_music_volume, 1.075);
+                    _play_music(bn::sound_items::mj_theme_speed_up_game, speed_up_music_volume, 1.075);
                 }
                 else
                 {
@@ -302,7 +302,7 @@ bool game_scene::_update_fade(bool update_again)
                 }
             }
 
-            _big_pumpkin->set_visible(big_pumpkin_visible);
+            _big_ufo->set_visible(big_ufo_visible);
         }
     }
     else if(_speed_inc_animation)
@@ -310,7 +310,7 @@ bool game_scene::_update_fade(bool update_again)
         if(! _speed_inc_animation->update())
         {
             _speed_inc_animation.reset();
-            _big_pumpkin->set_visible(true);
+            _big_ufo->set_visible(true);
             _create_next_game_transition();
         }
     }
@@ -328,36 +328,36 @@ bool game_scene::_update_fade(bool update_again)
             _next_game_transition.reset();
         }
     }
-    else if(_big_pumpkin_counter)
+    else if(_big_ufo_counter)
     {
-        --_big_pumpkin_counter;
+        --_big_ufo_counter;
     }
     else
     {
-        if(_big_pumpkin_inc)
+        if(_big_ufo_inc)
         {
-            if(_big_pumpkin_stage < 13)
+            if(_big_ufo_stage < 13)
             {
-                ++_big_pumpkin_stage;
+                ++_big_ufo_stage;
             }
             else
             {
-                --_big_pumpkin_stage;
-                _big_pumpkin_inc = false;
+                --_big_ufo_stage;
+                _big_ufo_inc = false;
             }
         }
         else
         {
-            if(_big_pumpkin_stage > 1)
+            if(_big_ufo_stage > 1)
             {
-                --_big_pumpkin_stage;
+                --_big_ufo_stage;
             }
             else
             {
                 if(_lives.left())
                 {
-                    ++_big_pumpkin_stage;
-                    _big_pumpkin_inc = true;
+                    ++_big_ufo_stage;
+                    _big_ufo_inc = true;
                 }
                 else
                 {
@@ -367,14 +367,14 @@ bool game_scene::_update_fade(bool update_again)
         }
 
         const bn::regular_bg_item* bg_item = nullptr;
-        _big_pumpkin_counter = 2;
+        _big_ufo_counter = 2;
 
-        switch(_big_pumpkin_stage)
+        switch(_big_ufo_stage)
         {
 
         case 1:
-            bg_item = &bn::regular_bg_items::mj_big_pumpkin_1;
-            _big_pumpkin_counter = 0;
+            bg_item = &bn::regular_bg_items::mj_big_ufo_1;
+            _big_ufo_counter = 0;
 
             if(! exit)
             {
@@ -385,12 +385,12 @@ bool game_scene::_update_fade(bool update_again)
                     if(_victory)
                     {
                         _play_music(
-                            _completed_games % 2 ? second_victory_music_position : first_victory_music_position,
+                            bn::sound_items::mj_theme_won_game,
                             victory_music_volume, _music_tempo);
                     }
                     else
                     {
-                        _play_music(defeat_music_position, defeat_music_volume, _music_tempo);
+                        _play_music(bn::sound_items::mj_theme_lost_game, defeat_music_volume, _music_tempo);
                     }
                 }
                 else
@@ -401,9 +401,9 @@ bool game_scene::_update_fade(bool update_again)
             break;
 
         case 2:
-            bg_item = &bn::regular_bg_items::mj_big_pumpkin_2;
+            bg_item = &bn::regular_bg_items::mj_big_ufo_2;
 
-            if(_big_pumpkin_inc)
+            if(_big_ufo_inc)
             {
                 _backdrop.fade_out();
                 _lives.hide();
@@ -411,13 +411,13 @@ bool game_scene::_update_fade(bool update_again)
             break;
 
         case 3:
-            bg_item = &bn::regular_bg_items::mj_big_pumpkin_3;
+            bg_item = &bn::regular_bg_items::mj_big_ufo_3;
             break;
 
         case 4:
-            bg_item = &bn::regular_bg_items::mj_big_pumpkin_4;
+            bg_item = &bn::regular_bg_items::mj_big_ufo_4;
 
-            if(! _big_pumpkin_inc)
+            if(! _big_ufo_inc)
             {
                 if(_first_game_played)
                 {
@@ -436,11 +436,11 @@ bool game_scene::_update_fade(bool update_again)
             break;
 
         case 5:
-            bg_item = &bn::regular_bg_items::mj_big_pumpkin_5;
+            bg_item = &bn::regular_bg_items::mj_big_ufo_5;
 
-            if(_big_pumpkin_inc)
+            if(_big_ufo_inc)
             {
-                _big_pumpkin.reset();
+                _big_ufo.reset();
 
                 game_manager& game_manager = _game_manager.emplace(_completed_games, _data, _core, _game_history);
                 int total_frames = game_manager.game().total_frames();
@@ -453,9 +453,9 @@ bool game_scene::_update_fade(bool update_again)
             break;
 
         case 6:
-            bg_item = &bn::regular_bg_items::mj_big_pumpkin_6;
+            bg_item = &bn::regular_bg_items::mj_big_ufo_6;
 
-            if(_big_pumpkin_inc)
+            if(_big_ufo_inc)
             {
                 bn::string<32> title = _game_manager->game().title();
 
@@ -469,29 +469,29 @@ bool game_scene::_update_fade(bool update_again)
             break;
 
         case 7:
-            bg_item = &bn::regular_bg_items::mj_big_pumpkin_7;
+            bg_item = &bn::regular_bg_items::mj_big_ufo_7;
             break;
 
         case 8:
-            bg_item = &bn::regular_bg_items::mj_big_pumpkin_8;
+            bg_item = &bn::regular_bg_items::mj_big_ufo_8;
             break;
 
         case 9:
-            bg_item = &bn::regular_bg_items::mj_big_pumpkin_9;
+            bg_item = &bn::regular_bg_items::mj_big_ufo_9;
             break;
 
         case 10:
-            bg_item = &bn::regular_bg_items::mj_big_pumpkin_10;
+            bg_item = &bn::regular_bg_items::mj_big_ufo_10;
             break;
 
         case 11:
-            bg_item = &bn::regular_bg_items::mj_big_pumpkin_11;
+            bg_item = &bn::regular_bg_items::mj_big_ufo_11;
             break;
 
         case 12:
-            bg_item = &bn::regular_bg_items::mj_big_pumpkin_12;
+            bg_item = &bn::regular_bg_items::mj_big_ufo_12;
 
-            if(! _big_pumpkin_inc && ! _first_game_played)
+            if(! _big_ufo_inc && ! _first_game_played)
             {
                 bn::regular_bg_ptr white_bg = bn::regular_bg_items::mj_white_bg.create_bg(0, 0);
                 white_bg.set_priority(0);
@@ -503,19 +503,19 @@ bool game_scene::_update_fade(bool update_again)
             break;
 
         default:
-            if(_big_pumpkin_inc)
+            if(_big_ufo_inc)
             {
                 _playing = true;
-                _big_pumpkin_counter = 0;
+                _big_ufo_counter = 0;
             }
             else
             {
-                _big_pumpkin_counter = 60;
+                _big_ufo_counter = 60;
             }
             break;
         }
 
-        _update_big_pumpkin(bg_item);
+        _update_big_ufo(bg_item);
     }
 
     if(! _playing)
@@ -524,7 +524,7 @@ bool game_scene::_update_fade(bool update_again)
         {
             game& game = _game_manager->game();
 
-            if(_big_pumpkin_inc)
+            if(_big_ufo_inc)
             {
                 game.fade_in(_data);
             }
@@ -543,26 +543,26 @@ bool game_scene::_update_fade(bool update_again)
     return exit;
 }
 
-void game_scene::_update_big_pumpkin(const bn::regular_bg_item* bg_item)
+void game_scene::_update_big_ufo(const bn::regular_bg_item* bg_item)
 {
     if(bg_item)
     {
-        if(_big_pumpkin)
+        if(_big_ufo)
         {
-            _big_pumpkin->set_item(*bg_item);
+            _big_ufo->set_item(*bg_item);
         }
         else
         {
-            bn::regular_bg_ptr big_pumpkin = bg_item->create_bg(0, (256 - 160) / 2);
-            big_pumpkin.set_priority(0);
-            _big_pumpkin = bn::move(big_pumpkin);
+            bn::regular_bg_ptr big_ufo = bg_item->create_bg(0, (256 - 160) / 2);
+            big_ufo.set_priority(0);
+            _big_ufo = bn::move(big_ufo);
         }
 
-        _big_pumpkin->set_visible(! _result_animation);
+        _big_ufo->set_visible(! _result_animation);
     }
     else
     {
-        _big_pumpkin.reset();
+        _big_ufo.reset();
     }
 }
 

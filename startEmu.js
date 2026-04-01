@@ -1,3 +1,38 @@
+function isDesktopLike() {
+  return window.matchMedia("(pointer: fine) and (hover: hover)").matches;
+}
+
+function showControlsToast() {
+  const toast = document.getElementById("controls-toast");
+  if (!toast) return;
+  toast.hidden = false;
+  requestAnimationFrame(() => toast.classList.add("show"));
+}
+
+function hideControlsToast() {
+  const toast = document.getElementById("controls-toast");
+  if (!toast) return;
+  toast.classList.remove("show");
+  setTimeout(() => {
+    toast.hidden = true;
+  }, 180);
+}
+
+function installDesktopControlsToast() {
+  if (!isDesktopLike()) return;
+
+  showControlsToast();
+
+  function onFirstZPress(e) {
+    if (e.key === "z" || e.key === "Z") {
+      window.removeEventListener("keydown", onFirstZPress);
+      setTimeout(hideControlsToast, 1200);
+    }
+  }
+
+  window.addEventListener("keydown", onFirstZPress);
+}
+
 async function resolveRomUrl() {
   let res;
 
@@ -96,6 +131,7 @@ function configureAndLoadEmulator(romUrl) {
 
   const s = document.createElement("script");
   s.src = "https://cdn.emulatorjs.org/4.2.3/data/loader.js";
+  s.addEventListener("load", installDesktopControlsToast, { once: true });
   document.head.appendChild(s);
 }
 

@@ -9,20 +9,24 @@ namespace knc {
  * @param random rng from game_data used to pick spawn column
  * @param speed falling speed in pixels per frame
  */
+
+ // 4 frame but start from 0 - looping animation
 planet::planet(bn::fixed_point position, bn::fixed speed) :
-    _sprite(bn::sprite_items::fire_planet.create_sprite(0, -80)),
+    _sprite(bn::sprite_items::fire_planet.create_sprite(position)),
+    _animation(bn::create_sprite_animate_action_forever(_sprite, 8, bn::sprite_items::fire_planet.tiles_item(), 0, 1, 2, 3)),
     _position(position) ,
     _speed(speed)
 {
-    _sprite.set_position(_position);
 }
 
 /**
  * Called once per frame — moves planet downward
+ * animation update here
  */
 void planet::update() {
     _position.set_y(_position.y() + _speed);
     _sprite.set_position(_position);
+    _animation.update();
 }
 
 // returns current position for collision detection with the cat

@@ -15,6 +15,8 @@ namespace any {
         bn::fixed x() const;
         bn::fixed y() const;
 
+        bn::fixed dy() const { return _dy; }
+
     private:
         bn::sprite_ptr _sprite;
         bn::fixed _dy = 0;

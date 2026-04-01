@@ -24,6 +24,15 @@ namespace sdg {
             bool code_is_correct() const;
 
             const bn::vector<int, 10>& challenge() const;
+
+            // code progress
+            int progress() const;
+
+            // Keeps track if an incorrect input was inputted
+            bool incorrect_input;
+
+            // Keeps track if a correct input was inputted. Used for sound effects only.
+            bool correct_input;
         private:
             // Default value for when no input is detected.
             int _input = -1;

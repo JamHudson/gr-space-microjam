@@ -5,6 +5,7 @@
 #include "bn_fixed.h"
 #include "bn_sprite_ptr.h"
 #include "bn_display.h"
+#include "bn_sprite_animate_actions.h"
 
 
 // my game user
@@ -32,6 +33,7 @@ namespace knc {
 
     private:
     bn::sprite_ptr _sprite;
+    bn::sprite_animate_action<4> _animation;
     bn::fixed_point _position;
     bn::fixed _speed;
     };

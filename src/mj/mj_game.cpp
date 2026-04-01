@@ -22,7 +22,8 @@ int game::recommended_total_frames(int base_total_frames, int completed_games, c
 
 difficulty_level game::recommended_difficulty_level(int completed_games, [[maybe_unused]] const game_data& data)
 {
-    return difficulty_level(bn::clamp(completed_games, 0, 2));
+    // TODO: Make it so that the difficulty can be manually set in the debug menu
+    return difficulty_level(bn::clamp(completed_games / 9, 0, 2));
 }
 
 bn::fixed game::recommended_music_tempo(int completed_games, [[maybe_unused]] const game_data& data)
